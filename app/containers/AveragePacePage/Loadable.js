@@ -1,5 +1,5 @@
 /**
- * Asynchronously loads the component for HomePage
+ * Asynchronously loads the component for TotalTime
  */
 
 import loadable from 'utils/loadable';

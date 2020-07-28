@@ -10,7 +10,9 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import HomePage from 'containers/HomePage/Loadable';
+import TotalTimePage from 'containers/TotalTimePage/Loadable';
+import AveragePacePage from 'containers/AveragePacePage/Loadable';
+import ImageGeneratorPage from 'containers/ImageGeneratorPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 import GlobalStyle from '../../global-styles';
@@ -19,7 +21,9 @@ export default function App() {
   return (
     <div>
       <Switch>
-        <Route exact path="/" component={HomePage} />
+        <Route exact path="/" component={TotalTimePage} />
+        <Route exact path="/average-pace" component={AveragePacePage} />
+        <Route exact path="/image-generator" component={ImageGeneratorPage} />
         <Route component={NotFoundPage} />
       </Switch>
       <GlobalStyle />
