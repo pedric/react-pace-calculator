@@ -15,11 +15,13 @@ import TotalTimePageData from './data';
 class TotalTimePage extends React.Component {
   constructor() {
     super();
-    this.state = TotalTimePageData;
+    this.state = { ...TotalTimePageData };
     this.setFinisherTime = this.setFinisherTime.bind(this);
+    this.setTimeInSeconds = this.setTimeInSeconds.bind(this);
+    this.onAfterChange = this.onAfterChange.bind(this);
   }
 
-  setFinisherTime = e => {
+  async setFinisherTime(e) {
     const finisherTime = { ...this.state.finisherTime };
     if (e.target.name === 'hours') {
       finisherTime.hours = parseInt(e.target.value);
@@ -33,92 +35,116 @@ class TotalTimePage extends React.Component {
       finisherTime.seconds = parseInt(e.target.value);
       this.setState({ finisherTime });
     }
-    this.setTimeInSeconds();
-    // const secondsOfRacing =
-    //   this.state.finisherTime.hours * 3600 +
-    //   this.state.finisherTime.minutes * 60 +
-    //   this.state.finisherTime.seconds;
-    // const totalTimeInSeconds = { ...this.state.totalTimeInSeconds };
-    // this.setState({ totalTimeInSeconds: secondsOfRacing });
-    // this.setPace();
-    // console.log('setFinisherTime: ', this.state);
-  };
+    await this.setTimeInSeconds();
+  }
 
-  setTimeInSeconds = e => {
-    const finisherTime = { ...this.state.finisherTime };
-    const secondsOfRacing =
-      finisherTime.hours * 3600 +
-      finisherTime.minutes * 60 +
-      finisherTime.seconds;
+  async onAfterChange() {
+    await this.setTimeInSeconds();
+    // console.log('After change function: ', this.state);
+  }
+
+  async setTimeInSeconds() {
+    // const finisherTime = { ...this.state.finisherTime };
+    // console.log('hej', finisherTime);
+    const hours = this.state.finisherTime.hours * 3600;
+    const minutes = this.state.finisherTime.minutes * 60;
+    const seconds = this.state.finisherTime.seconds;
+    const secondsOfRacing = hours + minutes + seconds;
     const totalTimeInSeconds = { ...this.state.totalTimeInSeconds };
-    this.setState({ totalTimeInSeconds: secondsOfRacing });
-    this.setPace();
-    // console.log('setTimeInSeconds: ', this.state);
-  };
+    await this.setState({ totalTimeInSeconds: secondsOfRacing });
+    await this.setPace();
+    console.log('setTimeInSeconds: ', this.state);
+  }
 
   selectRace = e => {
-    // console.log('selectRace: ', this.state);
-    console.log('race set: ', e.target.value);
+    const selectedOption = e.target.childNodes[e.target.selectedIndex];
+    const selectedRaceName = selectedOption.getAttribute('name');
+    // console.log('selectRace: ', selectedRaceName);
+    // console.log('race set: ', e.target.value);
     const raceLength = { ...this.state.raceLength };
-    this.setState({ raceLength: parseInt(e.target.value) });
+    this.setState({
+      raceLength: parseInt(e.target.value),
+      raceName: selectedRaceName,
+    });
+    this.setTimeInSeconds();
   };
 
-  setPace = () => {
+  setPace() {
     const pace = { ...this.state.pace.minutes };
-    const paceInSeconds =
-      parseInt(this.state.totalTimeInSeconds) / parseInt(this.state.raceLength);
-    console.log('total sec: ', this.state.totalTimeInSeconds);
-    console.log('race length: ', this.state.raceLength);
-    console.log('paceInSeconds: ', paceInSeconds);
+    const miles = parseInt(this.state.raceLength) * 0.621371;
+    const secondsPerKilometer =
+      (parseInt(this.state.totalTimeInSeconds) /
+        parseInt(this.state.raceLength)) *
+      1000;
+    const secondsPerMiles =
+      (parseInt(this.state.totalTimeInSeconds) / parseInt(miles)) * 1000;
+    const minutesKm = Math.trunc(secondsPerKilometer / 60);
+    const secondsKm = Math.trunc(secondsPerKilometer % 60);
+    const minutesMiles = Math.trunc(secondsPerMiles / 60);
+    const secondsMiles = (secondsPerMiles % 60).toFixed(1);
     this.setState({
       pace: {
-        minutes: 5,
-        seconds: 13,
+        minutesPerKm: minutesKm,
+        secondsPerKm: secondsKm,
+        minutesPerMiles: minutesMiles,
+        secondsPerMiles: secondsMiles,
       },
     });
-  };
+  }
 
   render() {
     // console.log(this.state);
     const raceOptions = this.state.raceTypes.map(race => (
-      <option key={race.name} value={race.length}>
+      <option key={race.name} value={race.length} name={race.name}>
         {race.name}
       </option>
     ));
     return (
-      <div>
+      <div className={'container'}>
         <div style={{ padding: '10px' }}>
           <select id="races" onChange={this.selectRace}>
             {raceOptions}
           </select>
         </div>
-        <RangeInput
-          name="hours"
-          value={this.state.finisherTime.hours}
-          min={0}
-          max={6}
-          handleChange={this.setFinisherTime}
-        />
-        <RangeInput
-          name="minutes"
-          value={this.state.finisherTime.minutes}
-          min={0}
-          max={60}
-          handleChange={this.setFinisherTime}
-        />
-        <RangeInput
-          name="seconds"
-          value={this.state.finisherTime.seconds}
-          min={0}
-          max={60}
-          handleChange={this.setFinisherTime}
-        />
+        <form>
+          <RangeInput
+            name="hours"
+            value={this.state.finisherTime.hours}
+            min={0}
+            max={6}
+            handleChange={this.setFinisherTime}
+            mouseUpFunction={this.onAfterChange}
+            active={this.state.raceLength > 0 ? false : true}
+          />
+          <RangeInput
+            name="minutes"
+            value={this.state.finisherTime.minutes}
+            min={0}
+            max={60}
+            handleChange={this.setFinisherTime}
+            mouseUpFunction={this.onAfterChange}
+            active={this.state.raceLength > 0 ? false : true}
+          />
+          <RangeInput
+            name="seconds"
+            value={this.state.finisherTime.seconds}
+            min={0}
+            max={60}
+            handleChange={this.setFinisherTime}
+            mouseUpFunction={this.onAfterChange}
+            active={this.state.raceLength > 0 ? false : true}
+          />
+        </form>
         <ResultsMonitor
+          name={this.state.raceName}
+          distance={this.state.raceLength}
           finisherHours={this.state.finisherTime.hours}
           finisherMinutes={this.state.finisherTime.minutes}
           finisherSeconds={this.state.finisherTime.seconds}
-          paceMinutes={this.state.pace.minutes}
-          paceSeconds={this.state.pace.seconds}
+          paceMinutesPerKm={this.state.pace.minutesPerKm}
+          paceSecondsPerKm={this.state.pace.secondsPerKm}
+          paceMinutesPerMiles={this.state.pace.minutesPerMiles}
+          paceSecondsPerMiles={this.state.pace.secondsPerMiles}
         />
       </div>
     );

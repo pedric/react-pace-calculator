@@ -5,8 +5,10 @@ const TotalTimePageData = {
     seconds: 0,
   },
   pace: {
-    minutes: 0,
-    seconds: 0,
+    minutesPerKm: 0,
+    secondsPerKm: 0,
+    minutesPerMiles: 0,
+    secondsPerMiles: 0,
   },
   raceTypes: [
     {
@@ -38,6 +40,7 @@ const TotalTimePageData = {
       length: 42195,
     },
   ],
+  raceName: '',
   raceLength: 0,
   totalTimeInSeconds: 0,
 };

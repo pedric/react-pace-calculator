@@ -6,15 +6,27 @@ export default function ResultsMonitor(props) {
   };
 
   return (
-    <div>
+    <div style={{ textAlign: 'center' }} className={'f4'}>
       <div style={styles}>
-        time -<span>{props.finisherHours} : </span>
+        <span>{props.name}</span>
+      </div>
+      <div style={styles}>
+        <span>time: </span>
+        <span>{props.finisherHours} : </span>
         <span>{props.finisherMinutes} : </span>
         <span>{props.finisherSeconds}</span>
       </div>
       <div style={styles}>
-        pace -<span>{props.paceMinutes} : </span>
-        <span>{props.paceSeconds}</span>
+        <span>pace: </span>
+        <span>{props.paceMinutesPerKm} : </span>
+        <span>{props.paceSecondsPerKm}</span>
+        <span> (min/km)</span>
+      </div>
+      <div style={styles}>
+        <span>pace: </span>
+        <span>{props.paceMinutesPerMiles} : </span>
+        <span>{props.paceSecondsPerMiles}</span>
+        <span> (min/miles)</span>
       </div>
     </div>
   );
