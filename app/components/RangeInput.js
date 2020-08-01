@@ -29,6 +29,7 @@ export default function RangeInput(props) {
           step={1}
           onChange={props.handleChange}
           onMouseUp={props.mouseUpFunction}
+          onTouchEnd={props.mouseUpFunction}
           disabled={props.active}
         />
         <span>{props.max}</span>

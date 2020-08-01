@@ -4,29 +4,39 @@ export default function ResultsMonitor(props) {
   const styles = {
     padding: '10px',
   };
+  const blue = {
+    color: '#2196f3',
+  };
 
   return (
-    <div style={{ textAlign: 'center' }} className={'f4'}>
+    <div className={'f4'}>
       <div style={styles}>
-        <span>{props.name}</span>
+        <span className={props.name ? 'f2' : 'f6'}>
+          {props.name ? props.name : 'Pick a race type above'}
+        </span>
       </div>
       <div style={styles}>
-        <span>time: </span>
-        <span>{props.finisherHours} : </span>
-        <span>{props.finisherMinutes} : </span>
-        <span>{props.finisherSeconds}</span>
+        <span className={'f6'}>Finisher time:</span>
+        <div className={'f3'}>
+          <span style={blue}>{props.finisherHours} : </span>
+          <span style={blue}>{props.finisherMinutes} : </span>
+          <span style={blue}>{props.finisherSeconds}</span>
+        </div>
       </div>
       <div style={styles}>
-        <span>pace: </span>
-        <span>{props.paceMinutesPerKm} : </span>
-        <span>{props.paceSecondsPerKm}</span>
-        <span> (min/km)</span>
+        <span className={'f6'}>Awerage pace:</span>
+        <div className={'f3'}>
+          <span style={blue}>{props.paceMinutesPerKm} : </span>
+          <span style={blue}>{props.paceSecondsPerKm}</span>
+          <span className={'f6'}> (min/km)</span>
+        </div>
       </div>
       <div style={styles}>
-        <span>pace: </span>
-        <span>{props.paceMinutesPerMiles} : </span>
-        <span>{props.paceSecondsPerMiles}</span>
-        <span> (min/miles)</span>
+        <div className={'f3'}>
+          <span style={blue}>{props.paceMinutesPerMiles} : </span>
+          <span style={blue}>{props.paceSecondsPerMiles}</span>
+          <span className={'f6'}> (min/miles)</span>
+        </div>
       </div>
     </div>
   );

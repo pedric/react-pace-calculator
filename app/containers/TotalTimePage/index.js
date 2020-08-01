@@ -1,15 +1,6 @@
-/*
- * HomePage
- *
- * This is the first thing users see of our App, at the '/' route
- *
- */
-
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 import RangeInput from 'components/RangeInput';
 import ResultsMonitor from 'components/ResultsMonitor';
-import messages from './messages';
 import TotalTimePageData from './data';
 
 class TotalTimePage extends React.Component {
@@ -35,17 +26,14 @@ class TotalTimePage extends React.Component {
       finisherTime.seconds = parseInt(e.target.value);
       this.setState({ finisherTime });
     }
-    await this.setTimeInSeconds();
+    // await this.setTimeInSeconds();
   }
 
   async onAfterChange() {
     await this.setTimeInSeconds();
-    // console.log('After change function: ', this.state);
   }
 
   async setTimeInSeconds() {
-    // const finisherTime = { ...this.state.finisherTime };
-    // console.log('hej', finisherTime);
     const hours = this.state.finisherTime.hours * 3600;
     const minutes = this.state.finisherTime.minutes * 60;
     const seconds = this.state.finisherTime.seconds;
@@ -53,7 +41,6 @@ class TotalTimePage extends React.Component {
     const totalTimeInSeconds = { ...this.state.totalTimeInSeconds };
     await this.setState({ totalTimeInSeconds: secondsOfRacing });
     await this.setPace();
-    console.log('setTimeInSeconds: ', this.state);
   }
 
   selectRace = e => {
@@ -69,7 +56,7 @@ class TotalTimePage extends React.Component {
     this.setTimeInSeconds();
   };
 
-  setPace() {
+  async setPace() {
     const pace = { ...this.state.pace.minutes };
     const miles = parseInt(this.state.raceLength) * 0.621371;
     const secondsPerKilometer =

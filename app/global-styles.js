@@ -17,7 +17,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   #app {
-    background-color: #fafafa;
     min-height: 100%;
     min-width: 100%;
   }
@@ -30,9 +29,9 @@ const GlobalStyle = createGlobalStyle`
 
   .container {
     width: 100%;
-    max-width: 400px;
+    max-width: 660px;
     margin: 0 auto;
-    padding: 60px 0;
+    padding: 5px;
   }
 
   select#races {
