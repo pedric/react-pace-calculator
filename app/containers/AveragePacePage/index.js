@@ -1,83 +1,73 @@
 import React from 'react';
 import RangeInput from 'components/RangeInput';
 import ResultsMonitor from 'components/ResultsMonitor';
-import TotalTimePageData from './data';
+import RunningData from 'data/data';
 
-class TotalTimePage extends React.Component {
+class AveragePacePage extends React.Component {
   constructor() {
     super();
-    this.state = { ...TotalTimePageData };
+    this.state = { ...RunningData };
+    this.setPace = this.setPace.bind(this);
     this.setFinisherTime = this.setFinisherTime.bind(this);
-    this.setTimeInSeconds = this.setTimeInSeconds.bind(this);
     this.onAfterChange = this.onAfterChange.bind(this);
   }
 
-  async setFinisherTime(e) {
+  // componentDidUpdate() {
+  //   console.log('component did change');
+  //   this.setFinisherTime();
+  // }
+
+  setPace = e => {
     const pace = { ...this.state.pace };
     if (e.target.name === 'minutes') {
       pace.minutesPerKm = parseInt(e.target.value);
+      pace.minutesPerMiles = Math.trunc(parseInt(e.target.value) * 1.621371);
       this.setState({ pace });
     }
     if (e.target.name === 'seconds') {
       pace.secondsPerKm = parseInt(e.target.value);
+      pace.secondsPerMiles = (parseInt(e.target.value) * 1.621371).toFixed(1);
       this.setState({ pace });
     }
-    console.log(this.state);
-    // await this.setTimeInSeconds();
-  }
+    this.setFinisherTime();
+  };
 
   async onAfterChange() {
-    await this.setTimeInSeconds();
-  }
-
-  async setTimeInSeconds() {
-    const hours = this.state.pace.hours * 3600;
-    const minutes = this.state.finisherTime.minutes * 60;
-    const seconds = this.state.finisherTime.seconds;
-    const secondsOfRacing = hours + minutes + seconds;
-    const totalTimeInSeconds = { ...this.state.totalTimeInSeconds };
-    await this.setState({ totalTimeInSeconds: secondsOfRacing });
-    await this.setPace();
+    await this.setFinisherTime();
   }
 
   selectRace = e => {
     const selectedOption = e.target.childNodes[e.target.selectedIndex];
     const selectedRaceName = selectedOption.getAttribute('name');
-    // console.log('selectRace: ', selectedRaceName);
-    // console.log('race set: ', e.target.value);
     const raceLength = { ...this.state.raceLength };
     this.setState({
       raceLength: parseInt(e.target.value),
       raceName: selectedRaceName,
     });
-    this.setTimeInSeconds();
+    this.setFinisherTime();
   };
 
-  async setPace() {
-    const pace = { ...this.state.pace.minutes };
-    const miles = parseInt(this.state.raceLength) * 0.621371;
-    const secondsPerKilometer =
-      (parseInt(this.state.totalTimeInSeconds) /
-        parseInt(this.state.raceLength)) *
-      1000;
-    const secondsPerMiles =
-      (parseInt(this.state.totalTimeInSeconds) / parseInt(miles)) * 1000;
-    const minutesKm = Math.trunc(secondsPerKilometer / 60);
-    const secondsKm = Math.trunc(secondsPerKilometer % 60);
-    const minutesMiles = Math.trunc(secondsPerMiles / 60);
-    const secondsMiles = (secondsPerMiles % 60).toFixed(1);
+  async setFinisherTime() {
+    const pace = { ...this.state.pace };
+    const secondsPerKm = pace.minutesPerKm * 60 + pace.secondsPerKm;
+    const secondsPerMeter = secondsPerKm / 1000;
+    const totalTimeInSeconds = secondsPerMeter * this.state.raceLength;
+    const totalHours = Math.floor(totalTimeInSeconds / 3600);
+    const totalMinutesAfterHours = Math.trunc((totalTimeInSeconds % 3600) / 60);
+    const totalSecondsAfterMinutes = Math.trunc(
+      (totalTimeInSeconds % 3600) - totalMinutesAfterHours * 60,
+    );
+    await this.setState({ totalTimeInSeconds: totalTimeInSeconds });
     this.setState({
-      pace: {
-        minutesPerKm: minutesKm,
-        secondsPerKm: secondsKm,
-        minutesPerMiles: minutesMiles,
-        secondsPerMiles: secondsMiles,
+      finisherTime: {
+        hours: totalHours,
+        minutes: totalMinutesAfterHours,
+        seconds: totalSecondsAfterMinutes,
       },
     });
   }
 
   render() {
-    // console.log(this.state);
     const raceOptions = this.state.raceTypes.map(race => (
       <option key={race.name} value={race.length} name={race.name}>
         {race.name}
@@ -95,8 +85,8 @@ class TotalTimePage extends React.Component {
             name="minutes"
             value={this.state.pace.minutesPerKm}
             min={0}
-            max={60}
-            handleChange={this.setFinisherTime}
+            max={30}
+            handleChange={this.setPace}
             mouseUpFunction={this.onAfterChange}
             active={this.state.raceLength > 0 ? false : true}
           />
@@ -104,8 +94,8 @@ class TotalTimePage extends React.Component {
             name="seconds"
             value={this.state.pace.secondsPerKm}
             min={0}
-            max={60}
-            handleChange={this.setFinisherTime}
+            max={59}
+            handleChange={this.setPace}
             mouseUpFunction={this.onAfterChange}
             active={this.state.raceLength > 0 ? false : true}
           />
@@ -126,4 +116,4 @@ class TotalTimePage extends React.Component {
   }
 }
 
-export default TotalTimePage;
+export default AveragePacePage;

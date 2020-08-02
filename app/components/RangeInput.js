@@ -11,7 +11,10 @@ export default function RangeInput(props) {
   };
 
   return (
-    <div style={wrapperStyles}>
+    <div
+      className={`input_wrapper ${props.active ? '' : 'input_wrapper--active'}`}
+      style={wrapperStyles}
+    >
       <div style={{ textAlign: 'center' }}>
         {props.value}
         <span className={'f6'}> {props.name}</span>

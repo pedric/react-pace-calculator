@@ -1,12 +1,12 @@
 import React from 'react';
 import RangeInput from 'components/RangeInput';
 import ResultsMonitor from 'components/ResultsMonitor';
-import TotalTimePageData from './data';
+import RunningData from 'data/data';
 
 class TotalTimePage extends React.Component {
   constructor() {
     super();
-    this.state = { ...TotalTimePageData };
+    this.state = { ...RunningData };
     this.setFinisherTime = this.setFinisherTime.bind(this);
     this.setTimeInSeconds = this.setTimeInSeconds.bind(this);
     this.onAfterChange = this.onAfterChange.bind(this);
@@ -98,7 +98,7 @@ class TotalTimePage extends React.Component {
             name="hours"
             value={this.state.finisherTime.hours}
             min={0}
-            max={6}
+            max={24}
             handleChange={this.setFinisherTime}
             mouseUpFunction={this.onAfterChange}
             active={this.state.raceLength > 0 ? false : true}
@@ -107,7 +107,7 @@ class TotalTimePage extends React.Component {
             name="minutes"
             value={this.state.finisherTime.minutes}
             min={0}
-            max={60}
+            max={59}
             handleChange={this.setFinisherTime}
             mouseUpFunction={this.onAfterChange}
             active={this.state.raceLength > 0 ? false : true}
@@ -116,7 +116,7 @@ class TotalTimePage extends React.Component {
             name="seconds"
             value={this.state.finisherTime.seconds}
             min={0}
-            max={60}
+            max={59}
             handleChange={this.setFinisherTime}
             mouseUpFunction={this.onAfterChange}
             active={this.state.raceLength > 0 ? false : true}

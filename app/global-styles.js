@@ -42,15 +42,27 @@ const GlobalStyle = createGlobalStyle`
     border: 1px solid #2296f3;
   }
 
+  .input_wrapper {
+    opacity: 0.2;
+    filter: grayscale(100%);
+
+    &--active {
+      opacity: 1;
+      filter: unset;
+    }
+  }
+
   input[type=range] {
     -webkit-appearance: none;
     margin: 18px auto;
     width: 90%;
   }
-  input[type=range]:disabled {
-    opacity: 0.3;
-    filter: grayscale(100%);
-  }
+
+  // input[type=range]:disabled {
+  //   opacity: 0.3;
+  //   filter: grayscale(100%);
+  // }
+
   input[type=range]:focus {
     outline: none;
   }
