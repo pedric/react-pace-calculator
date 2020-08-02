@@ -2,6 +2,7 @@ import React from 'react';
 import RangeInput from 'components/RangeInput';
 import ResultsMonitor from 'components/ResultsMonitor';
 import RunningData from 'data/data';
+import Calculator from 'classes/Calculator';
 
 class AveragePacePage extends React.Component {
   constructor() {
@@ -10,12 +11,8 @@ class AveragePacePage extends React.Component {
     this.setPace = this.setPace.bind(this);
     this.setFinisherTime = this.setFinisherTime.bind(this);
     this.onAfterChange = this.onAfterChange.bind(this);
+    this.calculator = new Calculator();
   }
-
-  // componentDidUpdate() {
-  //   console.log('component did change');
-  //   this.setFinisherTime();
-  // }
 
   setPace = e => {
     const pace = { ...this.state.pace };
@@ -29,7 +26,7 @@ class AveragePacePage extends React.Component {
       pace.secondsPerMiles = (parseInt(e.target.value) * 1.621371).toFixed(1);
       this.setState({ pace });
     }
-    this.setFinisherTime();
+    this.onAfterChange();
   };
 
   async onAfterChange() {
@@ -44,18 +41,29 @@ class AveragePacePage extends React.Component {
       raceLength: parseInt(e.target.value),
       raceName: selectedRaceName,
     });
-    this.setFinisherTime();
+    this.onAfterChange();
   };
 
   async setFinisherTime() {
     const pace = { ...this.state.pace };
-    const secondsPerKm = pace.minutesPerKm * 60 + pace.secondsPerKm;
-    const secondsPerMeter = secondsPerKm / 1000;
-    const totalTimeInSeconds = secondsPerMeter * this.state.raceLength;
-    const totalHours = Math.floor(totalTimeInSeconds / 3600);
-    const totalMinutesAfterHours = Math.trunc((totalTimeInSeconds % 3600) / 60);
-    const totalSecondsAfterMinutes = Math.trunc(
-      (totalTimeInSeconds % 3600) - totalMinutesAfterHours * 60,
+    const secondsPerKm = this.calculator.secondsPerKm(
+      pace.minutesPerKm,
+      pace.secondsPerKm,
+    );
+    const secondsPerMeter = this.calculator.secondsPerMeter(secondsPerKm);
+    const totalTimeInSeconds = this.calculator.totalTimeInSeconds(
+      secondsPerMeter,
+      this.state.raceLength,
+    );
+    const totalHours = this.calculator.totalHoursFromTotalTimeInSeconds(
+      totalTimeInSeconds,
+    );
+    const totalMinutesAfterHours = this.calculator.totalMinutesAfterHours(
+      totalTimeInSeconds,
+    );
+    const totalSecondsAfterMinutes = this.calculator.totalSecondsAfterMinutes(
+      totalTimeInSeconds,
+      totalMinutesAfterHours,
     );
     await this.setState({ totalTimeInSeconds: totalTimeInSeconds });
     this.setState({

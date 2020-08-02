@@ -2,6 +2,7 @@ import React from 'react';
 import RangeInput from 'components/RangeInput';
 import ResultsMonitor from 'components/ResultsMonitor';
 import RunningData from 'data/data';
+import Calculator from 'classes/Calculator';
 
 class TotalTimePage extends React.Component {
   constructor() {
@@ -10,6 +11,7 @@ class TotalTimePage extends React.Component {
     this.setFinisherTime = this.setFinisherTime.bind(this);
     this.setTimeInSeconds = this.setTimeInSeconds.bind(this);
     this.onAfterChange = this.onAfterChange.bind(this);
+    this.calculator = new Calculator();
   }
 
   async setFinisherTime(e) {
@@ -26,7 +28,7 @@ class TotalTimePage extends React.Component {
       finisherTime.seconds = parseInt(e.target.value);
       this.setState({ finisherTime });
     }
-    // await this.setTimeInSeconds();
+    // this.setTimeInSeconds();
   }
 
   async onAfterChange() {
@@ -34,10 +36,11 @@ class TotalTimePage extends React.Component {
   }
 
   async setTimeInSeconds() {
-    const hours = this.state.finisherTime.hours * 3600;
-    const minutes = this.state.finisherTime.minutes * 60;
-    const seconds = this.state.finisherTime.seconds;
-    const secondsOfRacing = hours + minutes + seconds;
+    const secondsOfRacing = this.calculator.hoursMinutesAndSecondsToSeconds(
+      this.state.finisherTime.hours,
+      this.state.finisherTime.minutes,
+      this.state.finisherTime.seconds,
+    );
     const totalTimeInSeconds = { ...this.state.totalTimeInSeconds };
     await this.setState({ totalTimeInSeconds: secondsOfRacing });
     await this.setPace();
@@ -58,14 +61,18 @@ class TotalTimePage extends React.Component {
 
   async setPace() {
     const pace = { ...this.state.pace.minutes };
-    const miles = parseInt(this.state.raceLength) * 0.621371;
-    const secondsPerKilometer =
-      (parseInt(this.state.totalTimeInSeconds) /
-        parseInt(this.state.raceLength)) *
-      1000;
-    const secondsPerMiles =
-      (parseInt(this.state.totalTimeInSeconds) / parseInt(miles)) * 1000;
-    const minutesKm = Math.trunc(secondsPerKilometer / 60);
+    const miles = this.calculator.metersToMiles(this.state.raceLength);
+    const secondsPerKilometer = this.calculator.secondsPerUnitFromSecondsAndDistance(
+      this.state.totalTimeInSeconds,
+      this.state.raceLength,
+    );
+    const secondsPerMiles = this.calculator.secondsPerUnitFromSecondsAndDistance(
+      this.state.totalTimeInSeconds,
+      miles,
+    );
+    const minutesKm = this.calculator.minutesPerUnitFromSeconds(
+      secondsPerKilometer,
+    );
     const secondsKm = Math.trunc(secondsPerKilometer % 60);
     const minutesMiles = Math.trunc(secondsPerMiles / 60);
     const secondsMiles = (secondsPerMiles % 60).toFixed(1);
