@@ -60,7 +60,6 @@ class TotalTimePage extends React.Component {
   };
 
   async setPace() {
-    const pace = { ...this.state.pace.minutes };
     const miles = this.calculator.metersToMiles(this.state.raceLength);
     const secondsPerKilometer = this.calculator.secondsPerUnitFromSecondsAndDistance(
       this.state.totalTimeInSeconds,
@@ -73,9 +72,15 @@ class TotalTimePage extends React.Component {
     const minutesKm = this.calculator.minutesPerUnitFromSeconds(
       secondsPerKilometer,
     );
-    const secondsKm = Math.trunc(secondsPerKilometer % 60);
-    const minutesMiles = Math.trunc(secondsPerMiles / 60);
-    const secondsMiles = (secondsPerMiles % 60).toFixed(1);
+    const secondsKm = this.calculator.secondsPerUnitFromSeconds(
+      secondsPerKilometer,
+    );
+    const minutesMiles = this.calculator.minutesPerUnitFromSeconds(
+      secondsPerMiles,
+    );
+    const secondsMiles = this.calculator.secondsPerUnitFromSeconds(
+      secondsPerMiles,
+    );
     this.setState({
       pace: {
         minutesPerKm: minutesKm,

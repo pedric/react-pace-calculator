@@ -33,11 +33,21 @@ export default class Calculator {
     return parseInt(meters) * 0.621371;
   };
 
+  minutesAndSecondsFromSeconds = sec => {
+    const minutes = Math.trunc(sec / 60);
+    const seconds = Math.trunc(sec % 60);
+    return { minutes: minutes, seconds: seconds };
+  };
+
   secondsPerUnitFromSecondsAndDistance = (sec, length) => {
     return (parseInt(sec) / parseInt(length)) * 1000;
   };
 
   minutesPerUnitFromSeconds = sec => {
     return Math.trunc(sec / 60);
+  };
+
+  secondsPerUnitFromSeconds = sec => {
+    return Math.trunc(sec % 60);
   };
 }

@@ -14,23 +14,62 @@ class AveragePacePage extends React.Component {
     this.calculator = new Calculator();
   }
 
-  setPace = e => {
+  async setPace(e) {
+    // console.log(this.state);
     const pace = { ...this.state.pace };
+    pace.minutesPerKm = this.state.pace.minutesPerKm;
+    pace.secondsPerKm = this.state.pace.secondsPerKm;
     if (e.target.name === 'minutes') {
       pace.minutesPerKm = parseInt(e.target.value);
-      pace.minutesPerMiles = Math.trunc(parseInt(e.target.value) * 1.621371);
-      this.setState({ pace });
     }
     if (e.target.name === 'seconds') {
       pace.secondsPerKm = parseInt(e.target.value);
-      pace.secondsPerMiles = (parseInt(e.target.value) * 1.621371).toFixed(1);
-      this.setState({ pace });
     }
+    const secondsOfRacing = this.calculator.hoursMinutesAndSecondsToSeconds(
+      this.state.finisherTime.hours,
+      this.state.finisherTime.minutes,
+      this.state.finisherTime.seconds,
+    );
+    const miles = this.calculator.metersToMiles(this.state.raceLength);
+    const secondsPerMiles = this.calculator.secondsPerUnitFromSecondsAndDistance(
+      this.state.totalTimeInSeconds,
+      miles,
+    );
+    let paceInmiles = this.calculator.minutesAndSecondsFromSeconds(
+      secondsPerMiles,
+    );
+    pace.minutesPerMiles = paceInmiles.minutes;
+    pace.secondsPerMiles = paceInmiles.seconds;
+    this.setState({ pace });
+    this.setState({ totalTimeInSeconds: secondsOfRacing });
     this.onAfterChange();
-  };
+  }
+
+  async setPaceAfterChange() {
+    const pace = { ...this.state.pace };
+    pace.minutesPerKm = this.state.pace.minutesPerKm;
+    pace.secondsPerKm = this.state.pace.secondsPerKm;
+    const secondsOfRacing = this.calculator.hoursMinutesAndSecondsToSeconds(
+      this.state.finisherTime.hours,
+      this.state.finisherTime.minutes,
+      this.state.finisherTime.seconds,
+    );
+    const miles = this.calculator.metersToMiles(this.state.raceLength);
+    const secondsPerMiles = this.calculator.secondsPerUnitFromSecondsAndDistance(
+      this.state.totalTimeInSeconds,
+      miles,
+    );
+    let paceInmiles = this.calculator.minutesAndSecondsFromSeconds(
+      secondsPerMiles,
+    );
+    pace.minutesPerMiles = paceInmiles.minutes;
+    pace.secondsPerMiles = paceInmiles.seconds;
+    this.setState({ pace });
+  }
 
   async onAfterChange() {
     await this.setFinisherTime();
+    await this.setPaceAfterChange();
   }
 
   selectRace = e => {
@@ -65,8 +104,9 @@ class AveragePacePage extends React.Component {
       totalTimeInSeconds,
       totalMinutesAfterHours,
     );
-    await this.setState({ totalTimeInSeconds: totalTimeInSeconds });
+    // this.setState({ totalTimeInSeconds: totalTimeInSeconds });
     this.setState({
+      totalTimeInSeconds: totalTimeInSeconds,
       finisherTime: {
         hours: totalHours,
         minutes: totalMinutesAfterHours,
@@ -95,7 +135,7 @@ class AveragePacePage extends React.Component {
             min={0}
             max={30}
             handleChange={this.setPace}
-            mouseUpFunction={this.onAfterChange}
+            mouseUpFunction={this.setPace}
             active={this.state.raceLength > 0 ? false : true}
           />
           <RangeInput
@@ -104,7 +144,7 @@ class AveragePacePage extends React.Component {
             min={0}
             max={59}
             handleChange={this.setPace}
-            mouseUpFunction={this.onAfterChange}
+            mouseUpFunction={this.setPace}
             active={this.state.raceLength > 0 ? false : true}
           />
         </form>
