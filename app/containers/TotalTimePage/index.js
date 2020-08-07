@@ -49,8 +49,6 @@ class TotalTimePage extends React.Component {
   selectRace = e => {
     const selectedOption = e.target.childNodes[e.target.selectedIndex];
     const selectedRaceName = selectedOption.getAttribute('name');
-    // console.log('selectRace: ', selectedRaceName);
-    // console.log('race set: ', e.target.value);
     const raceLength = { ...this.state.raceLength };
     this.setState({
       raceLength: parseInt(e.target.value),
@@ -108,6 +106,7 @@ class TotalTimePage extends React.Component {
         <form>
           <RangeInput
             name="hours"
+            label="hours"
             value={this.state.finisherTime.hours}
             min={0}
             max={24}
@@ -117,6 +116,7 @@ class TotalTimePage extends React.Component {
           />
           <RangeInput
             name="minutes"
+            label="minutes"
             value={this.state.finisherTime.minutes}
             min={0}
             max={59}
@@ -126,6 +126,7 @@ class TotalTimePage extends React.Component {
           />
           <RangeInput
             name="seconds"
+            label="seconds"
             value={this.state.finisherTime.seconds}
             min={0}
             max={59}

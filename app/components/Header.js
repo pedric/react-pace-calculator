@@ -24,7 +24,8 @@ export default class Header extends React.Component {
       left: '0',
       right: '0',
       width: '100%',
-      background: 'lightgray',
+      background: '#fff',
+      borderTop: '1px solid #eee',
     };
     const ulStyles = {
       padding: '0',
@@ -39,19 +40,18 @@ export default class Header extends React.Component {
       textAlign: 'center',
     };
     const aStyles = {
-      color: '#333',
+      // color: '#333',
       textAlign: 'center',
       padding: '15px',
       width: '100%',
       lineHeight: '2.5',
       display: 'block',
-      border: '1px solid #797979',
       textDecoration: 'none',
     };
 
     const menuItems = this.state.menu.map(item => (
       <li key={item.name} style={liStyles}>
-        <a href={item.url} style={aStyles} className={'f6'}>
+        <a href={item.url} style={aStyles} className={'f6 theme_color'}>
           {item.name}
         </a>
       </li>

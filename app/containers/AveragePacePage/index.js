@@ -1,6 +1,7 @@
 import React from 'react';
 import RangeInput from 'components/RangeInput';
 import ResultsMonitor from 'components/ResultsMonitor';
+import UnitPicker from 'components/UnitPicker';
 import RunningData from 'data/data';
 import Calculator from 'classes/Calculator';
 
@@ -14,106 +15,88 @@ class AveragePacePage extends React.Component {
     this.calculator = new Calculator();
   }
 
-  async setPace(e) {
-    // console.log(this.state);
+  setPace = e => {
     const pace = { ...this.state.pace };
-    pace.minutesPerKm = this.state.pace.minutesPerKm;
-    pace.secondsPerKm = this.state.pace.secondsPerKm;
+    let milePace = 0;
+    let kmPace = 0;
     if (e.target.name === 'minutes') {
-      pace.minutesPerKm = parseInt(e.target.value);
+      if (this.state.units === 'metric') {
+        pace.minutesPerKm = parseInt(e.target.value);
+      } else if (this.state.units === 'imperial') {
+        pace.minutesPerMiles = parseInt(e.target.value);
+      }
     }
     if (e.target.name === 'seconds') {
-      pace.secondsPerKm = parseInt(e.target.value);
+      if (this.state.units === 'metric') {
+        pace.secondsPerKm = parseInt(e.target.value);
+      } else if (this.state.units === 'imperial') {
+        pace.secondsPerMiles = parseInt(e.target.value);
+      }
     }
-    const secondsOfRacing = this.calculator.hoursMinutesAndSecondsToSeconds(
-      this.state.finisherTime.hours,
-      this.state.finisherTime.minutes,
-      this.state.finisherTime.seconds,
-    );
-    const miles = this.calculator.metersToMiles(this.state.raceLength);
-    const secondsPerMiles = this.calculator.secondsPerUnitFromSecondsAndDistance(
-      this.state.totalTimeInSeconds,
-      miles,
-    );
-    let paceInmiles = this.calculator.minutesAndSecondsFromSeconds(
-      secondsPerMiles,
-    );
-    pace.minutesPerMiles = paceInmiles.minutes;
-    pace.secondsPerMiles = paceInmiles.seconds;
+    if (this.state.units === 'metric') {
+      milePace = this.calculator.kmPaceToMilePace(
+        pace.minutesPerKm,
+        pace.secondsPerKm,
+        this.state.raceLength.meters,
+      );
+      pace.minutesPerMiles = milePace.minutes;
+      pace.secondsPerMiles = milePace.seconds;
+    } else if (this.state.units === 'imperial') {
+      kmPace = this.calculator.milePaceToKmPace(
+        pace.minutesPerMiles,
+        pace.secondsPerMiles,
+        this.calculator.metersToMiles(this.state.raceLength.meters),
+      );
+      pace.minutesPerKm = kmPace.minutes;
+      pace.secondsPerKm = kmPace.seconds;
+    }
     this.setState({ pace });
-    this.setState({ totalTimeInSeconds: secondsOfRacing });
-    this.onAfterChange();
-  }
+  };
 
-  async setPaceAfterChange() {
-    const pace = { ...this.state.pace };
-    pace.minutesPerKm = this.state.pace.minutesPerKm;
-    pace.secondsPerKm = this.state.pace.secondsPerKm;
-    const secondsOfRacing = this.calculator.hoursMinutesAndSecondsToSeconds(
-      this.state.finisherTime.hours,
-      this.state.finisherTime.minutes,
-      this.state.finisherTime.seconds,
+  async setRaceTimeInSeconds() {
+    const secondsOfRacing = this.calculator.totalTimeInSecondsFromPaceAndDistance(
+      this.state.pace.minutesPerKm,
+      this.state.pace.secondsPerKm,
+      this.state.raceLength.meters,
     );
-    const miles = this.calculator.metersToMiles(this.state.raceLength);
-    const secondsPerMiles = this.calculator.secondsPerUnitFromSecondsAndDistance(
-      this.state.totalTimeInSeconds,
-      miles,
-    );
-    let paceInmiles = this.calculator.minutesAndSecondsFromSeconds(
-      secondsPerMiles,
-    );
-    pace.minutesPerMiles = paceInmiles.minutes;
-    pace.secondsPerMiles = paceInmiles.seconds;
-    this.setState({ pace });
+    this.setState({ totalTimeInSeconds: secondsOfRacing });
   }
 
   async onAfterChange() {
+    await this.setRaceTimeInSeconds();
     await this.setFinisherTime();
-    await this.setPaceAfterChange();
   }
 
   selectRace = e => {
     const selectedOption = e.target.childNodes[e.target.selectedIndex];
     const selectedRaceName = selectedOption.getAttribute('name');
-    const raceLength = { ...this.state.raceLength };
-    this.setState({
-      raceLength: parseInt(e.target.value),
-      raceName: selectedRaceName,
-    });
-    this.onAfterChange();
+    const meters = selectedOption.getAttribute('value');
+    const miles = this.calculator.metersToMiles(meters);
+    this.setState({ raceName: selectedRaceName });
+    // const raceLength = { ...this.state.raceLength };
+    if (meters > 0) {
+      this.setState({
+        raceLength: {
+          meters: parseInt(meters),
+          miles: parseInt(miles),
+        },
+      });
+    }
+    // await this.onAfterChange();
   };
 
   async setFinisherTime() {
-    const pace = { ...this.state.pace };
-    const secondsPerKm = this.calculator.secondsPerKm(
-      pace.minutesPerKm,
-      pace.secondsPerKm,
+    let finisherTime = { ...this.state.finisherTime };
+    const time = this.calculator.hoursMinutesAndSecondsFromSeconds(
+      this.state.totalTimeInSeconds,
     );
-    const secondsPerMeter = this.calculator.secondsPerMeter(secondsPerKm);
-    const totalTimeInSeconds = this.calculator.totalTimeInSeconds(
-      secondsPerMeter,
-      this.state.raceLength,
-    );
-    const totalHours = this.calculator.totalHoursFromTotalTimeInSeconds(
-      totalTimeInSeconds,
-    );
-    const totalMinutesAfterHours = this.calculator.totalMinutesAfterHours(
-      totalTimeInSeconds,
-    );
-    const totalSecondsAfterMinutes = this.calculator.totalSecondsAfterMinutes(
-      totalTimeInSeconds,
-      totalMinutesAfterHours,
-    );
-    // this.setState({ totalTimeInSeconds: totalTimeInSeconds });
-    this.setState({
-      totalTimeInSeconds: totalTimeInSeconds,
-      finisherTime: {
-        hours: totalHours,
-        minutes: totalMinutesAfterHours,
-        seconds: totalSecondsAfterMinutes,
-      },
-    });
+    finisherTime = time;
+    this.setState({ finisherTime });
   }
+
+  setUnits = e => {
+    this.setState({ units: e.target.value });
+  };
 
   render() {
     const raceOptions = this.state.raceTypes.map(race => (
@@ -128,29 +111,43 @@ class AveragePacePage extends React.Component {
             {raceOptions}
           </select>
         </div>
+        <div style={{ padding: '10px' }}>
+          <UnitPicker handleChange={this.setUnits} active={this.state.units} />
+        </div>
         <form>
           <RangeInput
             name="minutes"
-            value={this.state.pace.minutesPerKm}
+            label={this.state.units === 'metric' ? 'minutes/km' : 'minutes/mi'}
+            value={
+              this.state.units === 'metric'
+                ? this.state.pace.minutesPerKm
+                : this.state.pace.minutesPerMiles
+            }
             min={0}
             max={30}
             handleChange={this.setPace}
-            mouseUpFunction={this.setPace}
-            active={this.state.raceLength > 0 ? false : true}
+            mouseUpFunction={this.onAfterChange}
+            active={this.state.raceLength.meters > 0 ? false : true}
           />
           <RangeInput
             name="seconds"
-            value={this.state.pace.secondsPerKm}
+            label={this.state.units === 'metric' ? 'seconds/km' : 'seconds/mi'}
+            value={
+              this.state.units === 'metric'
+                ? this.state.pace.secondsPerKm
+                : this.state.pace.secondsPerMiles
+            }
             min={0}
             max={59}
             handleChange={this.setPace}
-            mouseUpFunction={this.setPace}
-            active={this.state.raceLength > 0 ? false : true}
+            mouseUpFunction={this.onAfterChange}
+            active={this.state.raceLength.meters > 0 ? false : true}
           />
         </form>
         <ResultsMonitor
           name={this.state.raceName}
-          distance={this.state.raceLength}
+          distanceKm={this.state.raceLength.length}
+          distanceMiles={this.state.raceLength.miles}
           finisherHours={this.state.finisherTime.hours}
           finisherMinutes={this.state.finisherTime.minutes}
           finisherSeconds={this.state.finisherTime.seconds}

@@ -17,7 +17,7 @@ export default function RangeInput(props) {
     >
       <div style={{ textAlign: 'center' }}>
         {props.value}
-        <span className={'f6'}> {props.name}</span>
+        <span className={'f6'}> {props.label}</span>
       </div>
       <div style={inputStyles}>
         <span>{props.min}</span>

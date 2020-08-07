@@ -1,5 +1,8 @@
 import { createGlobalStyle } from 'styled-components';
 
+const themeColor = '#ff00a3';
+const themeGray = '#ccc';
+
 const GlobalStyle = createGlobalStyle`
 
   html,
@@ -27,11 +30,20 @@ const GlobalStyle = createGlobalStyle`
     line-height: 1.5em;
   }
 
+  .theme_color {
+    color: #ff00a3;
+  }
+
+  .theme_bg {
+    background-color: #ff00a3;
+  }
+
   .container {
     width: 100%;
     max-width: 660px;
     margin: 0 auto;
     padding: 5px;
+    padding-top: 30px;
   }
 
   select#races {
@@ -39,11 +51,11 @@ const GlobalStyle = createGlobalStyle`
     padding: 6px;
     background: #ececec;
     border-radius: 4px;
-    border: 1px solid #2296f3;
+    border: 1px solid ${themeColor};
   }
 
   .input_wrapper {
-    opacity: 0.2;
+    opacity: 0.1;
     filter: grayscale(100%);
 
     &--active {
@@ -78,16 +90,16 @@ const GlobalStyle = createGlobalStyle`
   input[type=range]::-webkit-slider-thumb {
     // box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
     // border: 1px solid #000000;
-    height: 16px;
-    width: 16px;
+    height: 22px;
+    width: 22px;
     border-radius: 50%;
-    background: #2196f3;
+    background: #ff00a3;
     cursor: pointer;
     -webkit-appearance: none;
-    margin-top: -8px;
+    margin-top: -11px;
   }
   input[type=range]:focus::-webkit-slider-runnable-track {
-    background: #367ebd;
+    background: ${themeColor};
   }
   input[type=range]::-moz-range-track {
     width: 100%;
