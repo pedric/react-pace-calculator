@@ -89,6 +89,7 @@ const RunningData = {
   },
   totalTimeInSeconds: 0,
   units: 'metric',
+  image: '',
 };
 
 export default RunningData;

@@ -2,6 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 
 const themeColor = '#ff00a3';
 const themeGray = '#ccc';
+const lightGray = '#eeeeee';
 
 const GlobalStyle = createGlobalStyle`
 
@@ -13,6 +14,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: 'Quicksand', Orbitron, Helvetica, Arial, sans-serif;
+    color: #000;
   }
 
   body.fontLoaded {
@@ -52,6 +54,93 @@ const GlobalStyle = createGlobalStyle`
     background: #ececec;
     border-radius: 4px;
     border: 1px solid ${themeColor};
+  }
+
+  .unit_picker {
+    .unit_picker__radio-wrapper{
+      display: inline-block;
+      width: 50%;
+
+      &--active {
+        background-color: ${lightGray};
+    
+        .unit_picker__label {
+          color: ${themeColor};
+          &:after {
+            background: ${themeColor};
+          }
+        }
+      }
+    }
+
+    .unit_picker__input {
+      position: absolute;
+      width: 0;
+      height: 0;
+      top: -9999px;
+      left: -9999px;
+    }
+
+    .unit_picker__label {
+      position: relative;
+      display: block;
+      font-family: "Quicksand",Orbitron,Helvetica,Arial,sans-serif;
+      padding: 4px;
+      cursor: pointer;
+      &:hover {
+        background: ${themeGray};
+      }
+      &:after {
+        content: '';
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        background: ${lightGray};
+      }
+    }
+  }
+
+  .share_image{
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 0;
+    padding-bottom: 100%;
+  }
+
+  .file_input {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+
+    &::-webkit-file-upload-button{
+      visibility: hidden;
+    }
+    
+    &:before {
+      content: '+';
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      background: ${themeColor};
+      border-radius: 50%;
+      cursor: pointer;
+      font-family: "Quicksand",Orbitron,Helvetica,Arial,sans-serif;
+      text-align: center;
+      color: #fff;
+      line-height: 1.3;
+      font-size: 20px;
+    }
+
+    &__label {
+      font-family: "Quicksand",Orbitron,Helvetica,Arial,sans-serif;
+      padding-left: 4px;
+      cursor: pointer;
+    }
   }
 
   .input_wrapper {

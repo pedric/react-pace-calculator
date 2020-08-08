@@ -1,0 +1,25 @@
+import React from 'react';
+
+export default function ImageUpload(props) {
+  const wrapperStyles = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: '10px',
+  };
+  return (
+    <div style={wrapperStyles}>
+      <input
+        type="file"
+        id="image"
+        name="image"
+        accept="image/png, image/jpeg"
+        onChange={props.handleChange}
+        className={'file_input'}
+      />
+      <label htmlFor="image" className={'file_input__label'}>
+        Upload image
+      </label>
+    </div>
+  );
+}

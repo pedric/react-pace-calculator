@@ -1,19 +1,23 @@
 import React from 'react';
 
-export default function ResultsMonitor(props) {
+export default function ShareImage(props) {
   const styles = {
     padding: '10px',
   };
+  const bgImageStyle = {
+    backgroundImage: 'url(' + props.imageUrl + ')',
+  };
 
   return (
-    <div className={'f4'}>
+    <div className={'share_image f4'} style={bgImageStyle}>
+      {/* <img src={props.imageUrl} /> */}
       <div style={styles}>
         <span className={props.name ? 'f2 theme_color' : 'f6'}>
-          {props.name ? props.name : 'Pick a race type above'}
+          {props.name ? props.name : 'Set length of run above'}
         </span>
       </div>
       <div style={styles}>
-        <span className={'f6'}>Finisher time:</span>
+        <span className={'f6'}>Time:</span>
         <div className={'f3'}>
           <span className={'theme_color'}>{props.finisherHours}</span>
           <span> : </span>

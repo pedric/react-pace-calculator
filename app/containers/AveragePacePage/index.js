@@ -82,7 +82,7 @@ class AveragePacePage extends React.Component {
         },
       });
     }
-    // await this.onAfterChange();
+    this.onAfterChange();
   };
 
   async setFinisherTime() {
@@ -112,7 +112,11 @@ class AveragePacePage extends React.Component {
           </select>
         </div>
         <div style={{ padding: '10px' }}>
-          <UnitPicker handleChange={this.setUnits} active={this.state.units} />
+          <UnitPicker
+            handleChange={this.setUnits}
+            active={this.state.units}
+            mouseUpFunction={this.onAfterChange}
+          />
         </div>
         <form>
           <RangeInput

@@ -13,13 +13,17 @@ export default class Header extends React.Component {
           name: 'Pace',
           url: '/average-pace',
         },
+        {
+          name: 'Image',
+          url: '/image-generator',
+        },
       ],
     };
   }
 
   render() {
     const headerstyles = {
-      position: 'absolute',
+      position: 'fixed',
       bottom: '0',
       left: '0',
       right: '0',
