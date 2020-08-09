@@ -28,7 +28,7 @@ const GlobalStyle = createGlobalStyle`
 
   p,
   label {
-    font-family: Georgia, Times, 'Times New Roman', serif;
+    font-family: "Quicksand",Orbitron,Helvetica,Arial,sans-serif;
     line-height: 1.5em;
   }
 
@@ -84,7 +84,6 @@ const GlobalStyle = createGlobalStyle`
     .unit_picker__label {
       position: relative;
       display: block;
-      font-family: "Quicksand",Orbitron,Helvetica,Arial,sans-serif;
       padding: 4px;
       cursor: pointer;
       &:hover {
@@ -103,12 +102,50 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  .color_picker {
+    border: none;
+    text-align: 'center';
+    text-decoration: 'none';
+    display: 'inline-block';
+    color: transparent;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 16px;
+    border:1px solid ${lightGray};
+    cursor: pointer;
+  }
+
   .share_image{
     background-size: cover;
     background-position: center;
     position: relative;
     height: 0;
     padding-bottom: 100%;
+    margin-bottom: 100px;
+    overflow: hidden;
+
+    .share_image__image {
+      position: absolute;
+      object-fit: cover;
+      // object-position: center;
+      z-index: -1;
+      width: auto;
+      min-width: 100%;
+      min-height: 100%;
+      display: block;
+    }
+  }
+
+  div#hidden_monitor {
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    height: 650px;
+    width: 650px;
+    top: -9999px;
+    overflow: hidden;
+    left: -9999px;
   }
 
   .file_input {

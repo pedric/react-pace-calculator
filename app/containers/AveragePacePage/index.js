@@ -116,6 +116,8 @@ class AveragePacePage extends React.Component {
             handleChange={this.setUnits}
             active={this.state.units}
             mouseUpFunction={this.onAfterChange}
+            metricLabel={'km/min'}
+            imperialLabel={'mi/min'}
           />
         </div>
         <form>

@@ -43,7 +43,7 @@ export default function UnitPicker(props) {
           onMouseUp={props.mouseUpFunction}
           onTouchEnd={props.mouseUpFunction}
         >
-          km/min
+          {props.metricLabel}
         </label>
       </span>
       <span
@@ -71,7 +71,7 @@ export default function UnitPicker(props) {
           onMouseUp={props.mouseUpFunction}
           onTouchEnd={props.mouseUpFunction}
         >
-          miles/min
+          {props.imperialLabel}
         </label>
       </span>
     </form>

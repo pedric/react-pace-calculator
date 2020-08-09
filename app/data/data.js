@@ -82,6 +82,7 @@ const RunningData = {
       miles: 100,
     },
   ],
+  colorOptions: ['pink', 'red', '#fff', '#000', 'blue'],
   raceName: '',
   raceLength: {
     meters: 0,
@@ -90,6 +91,7 @@ const RunningData = {
   totalTimeInSeconds: 0,
   units: 'metric',
   image: '',
+  color: '',
 };
 
 export default RunningData;
