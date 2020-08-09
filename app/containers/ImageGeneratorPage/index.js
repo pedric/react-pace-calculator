@@ -26,6 +26,7 @@ class ImageGeneratorPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.pickColor = this.pickColor.bind(this);
     this.saveImage = this.saveImage.bind(this);
+    this.setCustomRaceTitle = this.setCustomRaceTitle.bind(this);
     this.calculator = new Calculator();
   }
 
@@ -86,7 +87,7 @@ class ImageGeneratorPage extends React.Component {
     // const selectedOption = e.target.childNodes[e.target.selectedIndex];
     // const selectedRaceName = selectedOption.getAttribute('name');
     // ta bort 'm' från race name och konvertera från meter till km
-    const lengthInput = parseInt(e.target.value / 1000);
+    const lengthInput = (e.target.value / 1000).toFixed(1);
     // const length =
     //   this.state.units === 'metric'
     //     ? parseInt(e.target.value)
@@ -189,6 +190,11 @@ class ImageGeneratorPage extends React.Component {
     console.log(err);
   };
 
+  setCustomRaceTitle = e => {
+    console.log('setting custom title: ', e.target.value);
+    this.setState({ customRaceTitle: e.target.value });
+  };
+
   render() {
     const raceOptions = this.state.raceTypes.map(race => (
       <option key={race.name} value={race.length} name={race.name}>
@@ -217,7 +223,12 @@ class ImageGeneratorPage extends React.Component {
           </select>
         </div>
         <div style={{ padding: '10px' }}>
+          <label htmlFor="customkm">
+            {this.state.units === 'metric' ? 'Kilometers' : 'Miles'}
+          </label>
+          <br />
           <input
+            className={'custom_distance_input'}
             type="number"
             id="customkm"
             name="customkm"
@@ -226,9 +237,6 @@ class ImageGeneratorPage extends React.Component {
               this.state.units === 'metric' ? 'No of km' : 'No of miles'
             }
           />
-          <label htmlFor="customkm" style={{ marginLeft: '4px' }}>
-            {this.state.units === 'metric' ? 'Kilometers' : 'Miles'}
-          </label>
         </div>
         <form>
           <RangeInput
@@ -262,6 +270,20 @@ class ImageGeneratorPage extends React.Component {
             active={this.state.raceLength > 0 ? false : true}
           />
         </form>
+        <div style={{ padding: '10px' }}>
+          <label htmlFor="customTitle">
+            Activity title <span className={'f6'}>(optional)</span>
+          </label>
+          <br />
+          <input
+            className={'custom_title_input'}
+            type="text"
+            placeholder="Activity title"
+            id="customTitle"
+            name="customTitle"
+            onChange={this.setCustomRaceTitle}
+          />
+        </div>
         <ColorPicker
           label={'Text color options'}
           colors={this.state.colorOptions}
@@ -271,6 +293,7 @@ class ImageGeneratorPage extends React.Component {
           <button onClick={this.saveImage}>Save image</button>
         </div>
         <ShareImage
+          customTitle={this.state.customRaceTitle}
           modifier={''}
           classes={'share_image f4'}
           color={this.state.color}
@@ -287,6 +310,7 @@ class ImageGeneratorPage extends React.Component {
           paceSecondsPerMiles={this.state.pace.secondsPerMiles}
         />
         <ShareImage
+          customTitle={this.state.customRaceTitle}
           modifier={'hidden_monitor'}
           classes={'f4'}
           color={this.state.color}

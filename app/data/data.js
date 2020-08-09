@@ -82,8 +82,17 @@ const RunningData = {
       miles: 100,
     },
   ],
-  colorOptions: ['pink', 'red', '#fff', '#000', 'blue'],
+  colorOptions: [
+    '#fff',
+    '#000',
+    '#9e9e9e',
+    '#f20052',
+    '#8bc34a',
+    '#0000a6',
+    '#ff78e1',
+  ],
   raceName: '',
+  customRaceTitle: '',
   raceLength: {
     meters: 0,
     miles: 0,

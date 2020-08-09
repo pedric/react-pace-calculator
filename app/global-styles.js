@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
-const themeColor = '#ff00a3';
+// const themeColor = '#ff00a3';
+const themeColor = '#000';
 const themeGray = '#ccc';
 const lightGray = '#eeeeee';
 
@@ -30,6 +31,15 @@ const GlobalStyle = createGlobalStyle`
   label {
     font-family: "Quicksand",Orbitron,Helvetica,Arial,sans-serif;
     line-height: 1.5em;
+  }
+
+  .visibility_hidden {
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    position: absolute;
+    top: -999px;
+    left: -999px;
   }
 
   .theme_color {
@@ -102,6 +112,14 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  .custom_title_input,
+  .custom_distance_input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid ${lightGray};
+  }
+
   .color_picker {
     border: none;
     text-align: 'center';
@@ -114,6 +132,7 @@ const GlobalStyle = createGlobalStyle`
     margin-right: 16px;
     border:1px solid ${lightGray};
     cursor: pointer;
+    font-size: 0px;
   }
 
   .share_image{
