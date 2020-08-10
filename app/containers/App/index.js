@@ -11,7 +11,6 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import Header from 'components/Header';
-import Icon from 'components/Icon';
 import TotalTimePage from 'containers/TotalTimePage/Loadable';
 import AveragePacePage from 'containers/AveragePacePage/Loadable';
 import ImageGeneratorPage from 'containers/ImageGeneratorPage/Loadable';
@@ -30,7 +29,6 @@ export default function App() {
       </Switch>
       <GlobalStyle />
       <Header />
-      <Icon />
     </div>
   );
 }

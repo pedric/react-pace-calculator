@@ -1,4 +1,12 @@
 import React from 'react';
+import {
+  themeColor,
+  themeGray,
+  themeLightGray,
+  themeLight,
+  themeDark,
+} from 'settings/colors';
+import HelpCenter from 'components/HelpCenter';
 
 export default class Header extends React.Component {
   constructor() {
@@ -6,15 +14,15 @@ export default class Header extends React.Component {
     this.state = {
       menu: [
         {
-          name: 'Finisher time',
+          name: 'Time calculator',
           url: '/',
         },
         {
-          name: 'Pace',
+          name: 'Pace calculator',
           url: '/average-pace',
         },
         {
-          name: 'Image',
+          name: 'Image generator',
           url: '/image-generator',
         },
       ],
@@ -24,12 +32,12 @@ export default class Header extends React.Component {
   render() {
     const headerstyles = {
       position: 'fixed',
-      bottom: '0',
+      top: '0',
       left: '0',
       right: '0',
       width: '100%',
       background: '#fff',
-      borderTop: '1px solid #eee',
+      borderBottom: '1px solid #eee',
     };
     const ulStyles = {
       padding: '0',
@@ -43,19 +51,20 @@ export default class Header extends React.Component {
       maxWidth: '50%',
       textAlign: 'center',
     };
-    const aStyles = {
-      // color: '#333',
-      textAlign: 'center',
-      padding: '15px',
-      width: '100%',
-      lineHeight: '2.5',
-      display: 'block',
-      textDecoration: 'none',
-    };
+    // const aStyles = {
+    //   background: themeLight,
+    //   color: themeColor,
+    //   textAlign: 'center',
+    //   padding: '15px',
+    //   width: '100%',
+    //   lineHeight: '1.2',
+    //   display: 'block',
+    //   textDecoration: 'none',
+    // };
 
     const menuItems = this.state.menu.map(item => (
       <li key={item.name} style={liStyles}>
-        <a href={item.url} style={aStyles} className={'f6 theme_color'}>
+        <a href={item.url} className={'menu_btn f6'}>
           {item.name}
         </a>
       </li>
@@ -63,6 +72,7 @@ export default class Header extends React.Component {
 
     return (
       <header style={headerstyles}>
+        <HelpCenter />
         <nav>
           <ul style={ulStyles}>{menuItems}</ul>
         </nav>

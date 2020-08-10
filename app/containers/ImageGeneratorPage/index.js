@@ -176,6 +176,7 @@ class ImageGeneratorPage extends React.Component {
       windowHeight: window.innerHeight,
     })
       .then(canvas => {
+        this.setState({ generatingImage: true });
         canvas.toBlob(blob => {
           saveAs(blob, filename);
         });
@@ -203,7 +204,10 @@ class ImageGeneratorPage extends React.Component {
     ));
     return (
       <div className={'container'}>
-        <ImageUpload handleChange={this.handleChange} />
+        <ImageUpload
+          handleChange={this.handleChange}
+          status={this.state.image}
+        />
         <div style={{ padding: '10px' }}>
           <UnitPicker
             handleChange={this.setUnits}
@@ -289,8 +293,27 @@ class ImageGeneratorPage extends React.Component {
           colors={this.state.colorOptions}
           handleChange={this.pickColor}
         />
-        <div style={{ padding: '10px' }}>
-          <button onClick={this.saveImage}>Save image</button>
+        <div style={{ padding: '20px' }}>
+          <span
+            style={
+              this.state.image
+                ? { display: 'inline-block', marginRight: '8px' }
+                : { display: 'none' }
+            }
+          >
+            Ready?
+          </span>
+          <button
+            className={'btn'}
+            onClick={this.saveImage}
+            style={
+              this.state.image
+                ? { display: 'inline-block' }
+                : { display: 'none' }
+            }
+          >
+            Download image
+          </button>
         </div>
         <ShareImage
           customTitle={this.state.customRaceTitle}

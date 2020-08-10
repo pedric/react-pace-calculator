@@ -20,6 +20,7 @@ export default function ShareImage(props) {
         className={'share_image__image'}
         id={'share_image__image'}
       /> */}
+      <div className={props.imageUrl ? 'gradient' : ''} />
       <div style={{ padding: '20px' }}>
         <div
           style={styles}
@@ -36,7 +37,7 @@ export default function ShareImage(props) {
         </div>
         <div style={styles}>
           <span className={'f6'}>Time:</span>
-          <div className={'f3'}>
+          <div className={'f2'}>
             <span>{props.finisherHours}</span>
             <span className={'f6'}>h</span>
             <span> : </span>
@@ -49,7 +50,7 @@ export default function ShareImage(props) {
         </div>
         <div style={styles}>
           <span className={'f6'}>Pace:</span>
-          <div className={'f3'}>
+          <div className={'f2'}>
             <span>{props.paceMinutesPerKm}</span>
             <span> : </span>
             <span>{props.paceSecondsPerKm}</span>
@@ -57,7 +58,7 @@ export default function ShareImage(props) {
           </div>
         </div>
         <div style={styles}>
-          <div className={'f3'}>
+          <div className={'f2'}>
             <span>{props.paceMinutesPerMiles}</span>
             <span> : </span>
             <span>{props.paceSecondsPerMiles}</span>

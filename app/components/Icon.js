@@ -1,4 +1,11 @@
 import React from 'react';
+import {
+  themeColor,
+  themeGray,
+  themeLightGray,
+  themeLight,
+  themeDark,
+} from 'settings/colors';
 
 const Icon = () => {
   const wrapperStyles = {
@@ -10,7 +17,7 @@ const Icon = () => {
   };
 
   const iconStyles = {
-    fill: '#ff00a3',
+    fill: themeLight,
     maxWidth: '100%',
     maxHeight: '100%',
   };

@@ -6,7 +6,7 @@ export default function ColorPicker(props) {
       key={color}
       style={{ backgroundColor: color }}
       value={color}
-      className={'color_picker'}
+      className={'round_button'}
       onClick={props.handleChange}
     >
       color

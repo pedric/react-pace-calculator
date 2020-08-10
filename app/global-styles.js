@@ -1,9 +1,16 @@
 import { createGlobalStyle } from 'styled-components';
 
 // const themeColor = '#ff00a3';
-const themeColor = '#000';
-const themeGray = '#ccc';
-const lightGray = '#eeeeee';
+// const themeColor = '#000';
+// const themeGray = '#ccc';
+// const themeLightGray = '#eeeeee';
+import {
+  themeColor,
+  themeGray,
+  themeLightGray,
+  themeLight,
+  themeDark,
+} from 'settings/colors';
 
 const GlobalStyle = createGlobalStyle`
 
@@ -33,6 +40,15 @@ const GlobalStyle = createGlobalStyle`
     line-height: 1.5em;
   }
 
+  .btn {
+    display: block;
+    background: ${themeLight};
+    border: 2px solid ${themeColor};
+    padding: 6px 12px;
+    border-radius: 16px;
+    color: ${themeColor};
+  }
+
   .visibility_hidden {
     width: 1px;
     height: 1px;
@@ -43,11 +59,11 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .theme_color {
-    color: #ff00a3;
+    color: ${themeColor};
   }
 
   .theme_bg {
-    background-color: #ff00a3;
+    background-color: ${themeColor};
   }
 
   .container {
@@ -55,7 +71,7 @@ const GlobalStyle = createGlobalStyle`
     max-width: 660px;
     margin: 0 auto;
     padding: 5px;
-    padding-top: 30px;
+    padding-top: 100px;
   }
 
   select#races {
@@ -66,13 +82,61 @@ const GlobalStyle = createGlobalStyle`
     border: 1px solid ${themeColor};
   }
 
+  .menu_btn {
+    background: ${themeLight};
+    color: ${themeColor};
+    text-align: center;
+    padding: 15px 5px;
+    width: 100%;
+    line-height: 0;
+    display: block;
+    font-size: 12px;
+    text-decoration: none;
+
+    &:hover {
+      background: ${themeLightGray};
+    }
+  }
+
+  .helpcenter {
+    background-color: ${themeColor}; 
+    height: 33px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .helpcenter__button {
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .helpcenter__info {
+      background-color: ${themeColor};
+      color: ${themeLight};
+      padding: 0px;
+      width: 0%;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 998;
+      transition: width 250ms ease-in-out;
+
+      &.active {
+        width: 90%;
+        padding: 20px;
+      }
+    }
+  }
+
   .unit_picker {
     .unit_picker__radio-wrapper{
       display: inline-block;
       width: 50%;
 
       &--active {
-        background-color: ${lightGray};
+        background-color: ${themeLightGray};
     
         .unit_picker__label {
           color: ${themeColor};
@@ -107,7 +171,7 @@ const GlobalStyle = createGlobalStyle`
         border-radius: 50%;
         width: 20px;
         height: 20px;
-        background: ${lightGray};
+        background: ${themeLightGray};
       }
     }
   }
@@ -117,10 +181,10 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     padding: 8px;
     border-radius: 5px;
-    border: 1px solid ${lightGray};
+    border: 1px solid ${themeLightGray};
   }
 
-  .color_picker {
+  .round_button {
     border: none;
     text-align: 'center';
     text-decoration: 'none';
@@ -130,7 +194,7 @@ const GlobalStyle = createGlobalStyle`
     height: 20px;
     border-radius: 50%;
     margin-right: 16px;
-    border:1px solid ${lightGray};
+    border:1px solid ${themeLightGray};
     cursor: pointer;
     font-size: 0px;
   }
@@ -143,6 +207,7 @@ const GlobalStyle = createGlobalStyle`
     padding-bottom: 100%;
     margin-bottom: 100px;
     overflow: hidden;
+    z-index: -1;
 
     .share_image__image {
       position: absolute;
@@ -156,6 +221,19 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  .gradient {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    background: -moz-linear-gradient(-45deg,  rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(-45deg,  rgba(0,0,0,0.25) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(135deg,  rgba(0,0,0,0.25) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c2000000', endColorstr='#00000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  }
+
   div#hidden_monitor {
     background-size: cover;
     background-position: center;
@@ -165,6 +243,7 @@ const GlobalStyle = createGlobalStyle`
     top: -9999px;
     overflow: hidden;
     left: -9999px;
+    z-index: -1;
   }
 
   .file_input {
