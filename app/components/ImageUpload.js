@@ -4,7 +4,7 @@ export default function ImageUpload(props) {
   const wrapperStyles = {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     padding: '10px',
   };
   return (

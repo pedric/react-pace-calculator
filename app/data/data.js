@@ -101,6 +101,14 @@ const RunningData = {
   units: 'metric',
   image: '',
   color: '',
+  imageEditor: {
+    nav: ['image', 'units', 'distance', 'time', 'text', 'color', 'download'],
+  },
+  activeTab: '',
+  textAlign: {
+    nav: ['left', 'center', 'right'],
+    active: 'left',
+  },
 };
 
 export default RunningData;

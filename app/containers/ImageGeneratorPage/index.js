@@ -1,10 +1,3 @@
-/*
- * HomePage
- *
- * This is the first thing users see of our App, at the '/' route
- *
- */
-
 import React from 'react';
 import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
@@ -13,6 +6,8 @@ import ImageUpload from 'components/ImageUpload';
 import ShareImage from 'components/ShareImage';
 import UnitPicker from 'components/UnitPicker';
 import ColorPicker from 'components/ColorPicker';
+import AlignButton from 'components/AlignButton';
+import TabButton from 'components/TabButton';
 import RunningData from 'data/data';
 import Calculator from 'classes/Calculator';
 
@@ -26,6 +21,7 @@ class ImageGeneratorPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.pickColor = this.pickColor.bind(this);
     this.saveImage = this.saveImage.bind(this);
+    this.setActiveTab = this.setActiveTab.bind(this);
     this.setCustomRaceTitle = this.setCustomRaceTitle.bind(this);
     this.calculator = new Calculator();
   }
@@ -50,6 +46,12 @@ class ImageGeneratorPage extends React.Component {
       this.setState({ finisherTime });
     }
     // this.setTimeInSeconds();
+  }
+
+  componentDidMount() {
+    const imageEditor = { ...this.state.imageEditor };
+    imageEditor.activeTab = 'image';
+    this.setState({ imageEditor });
   }
 
   async onAfterChange() {
@@ -146,6 +148,7 @@ class ImageGeneratorPage extends React.Component {
   saveImage = () => {
     console.log('trying to save image');
     const element = document.getElementById('hidden_monitor');
+    console.log(element);
     const rect = element.getBoundingClientRect();
     const width = rect.right - rect.left;
     const height = rect.bottom - rect.top;
@@ -170,13 +173,14 @@ class ImageGeneratorPage extends React.Component {
       useCORS: true,
       taintTest: false,
       allowTaint: false,
-      x: -9999,
-      y: -9999,
+      x: 9999,
+      y: 9999,
       windowWidth: window.innerWidth,
       windowHeight: window.innerHeight,
+      scrollX: 0,
+      scrollY: 0,
     })
       .then(canvas => {
-        this.setState({ generatingImage: true });
         canvas.toBlob(blob => {
           saveAs(blob, filename);
         });
@@ -196,159 +200,262 @@ class ImageGeneratorPage extends React.Component {
     this.setState({ customRaceTitle: e.target.value });
   };
 
+  setActiveTab = tab => {
+    const imageEditor = { ...this.state.imageEditor };
+    imageEditor.activeTab = tab;
+    this.setState({ imageEditor });
+  };
+
+  setAlign = align => {
+    console.log(align);
+    const textAlign = { ...this.state.textAlign };
+    textAlign.active = align;
+    this.setState({ textAlign });
+  };
+
   render() {
     const raceOptions = this.state.raceTypes.map(race => (
       <option key={race.name} value={race.length} name={race.name}>
         {race.name}
       </option>
     ));
+    const tabs = this.state.imageEditor.nav.map(name => (
+      <TabButton
+        key={name}
+        name={name}
+        handleClick={this.setActiveTab}
+        activeTab={this.state.imageEditor.activeTab}
+      />
+    ));
+    const alignChoices = this.state.textAlign.nav.map(name => (
+      <AlignButton
+        key={name}
+        name={name}
+        handleClick={this.setAlign}
+        active={this.state.textAlign.active}
+      />
+    ));
     return (
       <div className={'container'}>
-        <ImageUpload
-          handleChange={this.handleChange}
-          status={this.state.image}
-        />
-        <div style={{ padding: '10px' }}>
-          <UnitPicker
-            handleChange={this.setUnits}
-            active={this.state.units}
-            mouseUpFunction={this.setUnits}
-            metricLabel={'kilometers'}
-            imperialLabel={'miles'}
+        <div className={'share_image'}>
+          <ShareImage
+            customTitle={this.state.customRaceTitle}
+            modifier={''}
+            classes={'share_image f4'}
+            align={this.state.textAlign.active}
+            color={this.state.color}
+            font={'inherit'}
+            imageUrl={this.state.image}
+            name={this.state.raceName}
+            units={this.state.units}
+            distance={this.state.raceLength}
+            finisherHours={this.state.finisherTime.hours}
+            finisherMinutes={this.state.finisherTime.minutes}
+            finisherSeconds={this.state.finisherTime.seconds}
+            paceMinutesPerKm={this.state.pace.minutesPerKm}
+            paceSecondsPerKm={this.state.pace.secondsPerKm}
+            paceMinutesPerMiles={this.state.pace.minutesPerMiles}
+            paceSecondsPerMiles={this.state.pace.secondsPerMiles}
+          />
+          <ShareImage
+            customTitle={this.state.customRaceTitle}
+            modifier={'hidden_monitor'}
+            classes={'f4'}
+            align={this.state.textAlign.active}
+            color={this.state.color}
+            font={'inherit'}
+            imageUrl={this.state.image}
+            name={this.state.raceName}
+            units={this.state.units}
+            distance={this.state.raceLength}
+            finisherHours={this.state.finisherTime.hours}
+            finisherMinutes={this.state.finisherTime.minutes}
+            finisherSeconds={this.state.finisherTime.seconds}
+            paceMinutesPerKm={this.state.pace.minutesPerKm}
+            paceSecondsPerKm={this.state.pace.secondsPerKm}
+            paceMinutesPerMiles={this.state.pace.minutesPerMiles}
+            paceSecondsPerMiles={this.state.pace.secondsPerMiles}
           />
         </div>
-        <div style={{ padding: '10px' }}>
-          Select distance from the dropdown or enter it manually in the field
-          below.
+        <div>
+          <nav className={'tab_menu'}>{tabs}</nav>
         </div>
-        <div style={{ padding: '10px' }}>
-          <select id="races" onChange={this.selectRaceFromOptions}>
-            {raceOptions}
-          </select>
-        </div>
-        <div style={{ padding: '10px' }}>
-          <label htmlFor="customkm">
-            {this.state.units === 'metric' ? 'Kilometers' : 'Miles'}
-          </label>
-          <br />
-          <input
-            className={'custom_distance_input'}
-            type="number"
-            id="customkm"
-            name="customkm"
-            onChange={this.selectRace}
-            placeholder={
-              this.state.units === 'metric' ? 'No of km' : 'No of miles'
-            }
-          />
-        </div>
-        <form>
-          <RangeInput
-            name="hours"
-            label="hours"
-            value={this.state.finisherTime.hours}
-            min={0}
-            max={24}
-            handleChange={this.setFinisherTime}
-            mouseUpFunction={this.onAfterChange}
-            active={this.state.raceLength > 0 ? false : true}
-          />
-          <RangeInput
-            name="minutes"
-            label="minutes"
-            value={this.state.finisherTime.minutes}
-            min={0}
-            max={59}
-            handleChange={this.setFinisherTime}
-            mouseUpFunction={this.onAfterChange}
-            active={this.state.raceLength > 0 ? false : true}
-          />
-          <RangeInput
-            name="seconds"
-            label="seconds"
-            value={this.state.finisherTime.seconds}
-            min={0}
-            max={59}
-            handleChange={this.setFinisherTime}
-            mouseUpFunction={this.onAfterChange}
-            active={this.state.raceLength > 0 ? false : true}
-          />
-        </form>
-        <div style={{ padding: '10px' }}>
-          <label htmlFor="customTitle">
-            Activity title <span className={'f6'}>(optional)</span>
-          </label>
-          <br />
-          <input
-            className={'custom_title_input'}
-            type="text"
-            placeholder="Activity title"
-            id="customTitle"
-            name="customTitle"
-            onChange={this.setCustomRaceTitle}
-          />
-        </div>
-        <ColorPicker
-          label={'Text color options'}
-          colors={this.state.colorOptions}
-          handleChange={this.pickColor}
-        />
-        <div style={{ padding: '20px' }}>
-          <span
+        <div className={'edit_controls'}>
+          <div
+            className={'tab_container'}
             style={
-              this.state.image
-                ? { display: 'inline-block', marginRight: '8px' }
+              this.state.imageEditor.activeTab === 'image'
+                ? { display: 'flex' }
                 : { display: 'none' }
             }
           >
-            Ready?
-          </span>
-          <button
-            className={'btn'}
-            onClick={this.saveImage}
+            <ImageUpload
+              handleChange={this.handleChange}
+              status={this.state.image}
+            />
+          </div>
+          <div
+            className={'tab_container'}
             style={
-              this.state.image
-                ? { display: 'inline-block' }
+              this.state.imageEditor.activeTab === 'units'
+                ? { display: 'flex' }
                 : { display: 'none' }
             }
           >
-            Download image
-          </button>
+            <div style={{ width: '100%' }}>
+              <UnitPicker
+                handleChange={this.setUnits}
+                active={this.state.units}
+                mouseUpFunction={this.setUnits}
+                metricLabel={'kilometers'}
+                imperialLabel={'miles'}
+              />
+            </div>
+          </div>
+          <div
+            className={'tab_container'}
+            style={
+              this.state.imageEditor.activeTab === 'distance'
+                ? { display: 'flex' }
+                : { display: 'none' }
+            }
+          >
+            <div>
+              Select distance from the dropdown or enter it manually in the
+              field below.
+              <div style={{ padding: '16px 0' }}>
+                <select id="races" onChange={this.selectRaceFromOptions}>
+                  {raceOptions}
+                </select>
+              </div>
+              <div style={{ padding: '16px 0' }}>
+                <label htmlFor="customkm">
+                  Disance in{' '}
+                  {this.state.units === 'metric' ? 'Kilometers' : 'Miles'}
+                </label>
+                <br />
+                <input
+                  className={'custom_distance_input'}
+                  type="number"
+                  id="customkm"
+                  name="customkm"
+                  onChange={this.selectRace}
+                  placeholder={
+                    this.state.units === 'metric' ? 'No of km' : 'No of miles'
+                  }
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className={'tab_container'}
+            style={
+              this.state.imageEditor.activeTab === 'time'
+                ? { display: 'flex' }
+                : { display: 'none' }
+            }
+          >
+            <div style={{ width: '100%' }}>
+              <RangeInput
+                name="hours"
+                label="hours"
+                value={this.state.finisherTime.hours}
+                min={0}
+                max={24}
+                handleChange={this.setFinisherTime}
+                mouseUpFunction={this.onAfterChange}
+                active={this.state.raceLength > 0 ? false : true}
+              />
+              <RangeInput
+                name="minutes"
+                label="minutes"
+                value={this.state.finisherTime.minutes}
+                min={0}
+                max={59}
+                handleChange={this.setFinisherTime}
+                mouseUpFunction={this.onAfterChange}
+                active={this.state.raceLength > 0 ? false : true}
+              />
+              <RangeInput
+                name="seconds"
+                label="seconds"
+                value={this.state.finisherTime.seconds}
+                min={0}
+                max={59}
+                handleChange={this.setFinisherTime}
+                mouseUpFunction={this.onAfterChange}
+                active={this.state.raceLength > 0 ? false : true}
+              />
+            </div>
+          </div>
+          <div
+            className={'tab_container'}
+            style={
+              this.state.imageEditor.activeTab === 'text'
+                ? { display: 'flex' }
+                : { display: 'none' }
+            }
+          >
+            <div>
+              <div>
+                <label htmlFor="customTitle">
+                  Activity title <span className={'f6'}>(optional)</span>
+                </label>
+                <br />
+                <input
+                  className={'custom_title_input'}
+                  type="text"
+                  placeholder="Activity title"
+                  id="customTitle"
+                  name="customTitle"
+                  onChange={this.setCustomRaceTitle}
+                />
+              </div>
+              <div>
+                <nav className={'align_menu'}>{alignChoices}</nav>
+              </div>
+            </div>
+          </div>
+          <div
+            className={'tab_container'}
+            style={
+              this.state.imageEditor.activeTab === 'color'
+                ? { display: 'flex' }
+                : { display: 'none' }
+            }
+          >
+            <ColorPicker
+              // label={'Text color options'}
+              colors={this.state.colorOptions}
+              handleChange={this.pickColor}
+            />
+          </div>
+          <div
+            className={'tab_container'}
+            style={
+              this.state.imageEditor.activeTab === 'download'
+                ? { display: 'flex' }
+                : { display: 'none' }
+            }
+          >
+            <div>
+              <div style={{ marginBottom: '8px', textAlign: 'center' }}>
+                Ready?
+              </div>
+              <button
+                className={'btn'}
+                onClick={this.saveImage}
+                // style={
+                //   this.state.image
+                //     ? { display: 'inline-block' }
+                //     : { display: 'none' }
+                // }
+              >
+                Download image
+              </button>
+            </div>
+          </div>
         </div>
-        <ShareImage
-          customTitle={this.state.customRaceTitle}
-          modifier={''}
-          classes={'share_image f4'}
-          color={this.state.color}
-          imageUrl={this.state.image}
-          name={this.state.raceName}
-          units={this.state.units}
-          distance={this.state.raceLength}
-          finisherHours={this.state.finisherTime.hours}
-          finisherMinutes={this.state.finisherTime.minutes}
-          finisherSeconds={this.state.finisherTime.seconds}
-          paceMinutesPerKm={this.state.pace.minutesPerKm}
-          paceSecondsPerKm={this.state.pace.secondsPerKm}
-          paceMinutesPerMiles={this.state.pace.minutesPerMiles}
-          paceSecondsPerMiles={this.state.pace.secondsPerMiles}
-        />
-        <ShareImage
-          customTitle={this.state.customRaceTitle}
-          modifier={'hidden_monitor'}
-          classes={'f4'}
-          color={this.state.color}
-          imageUrl={this.state.image}
-          name={this.state.raceName}
-          units={this.state.units}
-          distance={this.state.raceLength}
-          finisherHours={this.state.finisherTime.hours}
-          finisherMinutes={this.state.finisherTime.minutes}
-          finisherSeconds={this.state.finisherTime.seconds}
-          paceMinutesPerKm={this.state.pace.minutesPerKm}
-          paceSecondsPerKm={this.state.pace.secondsPerKm}
-          paceMinutesPerMiles={this.state.pace.minutesPerMiles}
-          paceSecondsPerMiles={this.state.pace.secondsPerMiles}
-        />
       </div>
     );
   }

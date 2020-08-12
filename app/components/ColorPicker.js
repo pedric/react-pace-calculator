@@ -14,7 +14,7 @@ export default function ColorPicker(props) {
   ));
   return (
     <div style={{ padding: '10px' }}>
-      <p>{props.label}</p>
+      {/* <p>{props.label}</p> */}
       {buttons}
     </div>
   );

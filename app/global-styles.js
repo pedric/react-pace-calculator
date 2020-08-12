@@ -1,11 +1,9 @@
 import { createGlobalStyle } from 'styled-components';
 
-// const themeColor = '#ff00a3';
-// const themeColor = '#000';
-// const themeGray = '#ccc';
-// const themeLightGray = '#eeeeee';
+// const clockIcon = require('images/icons/clock.svg');
 import {
   themeColor,
+  themeComplementaryColor,
   themeGray,
   themeLightGray,
   themeLight,
@@ -40,6 +38,114 @@ const GlobalStyle = createGlobalStyle`
     line-height: 1.5em;
   }
 
+  .align_menu,
+  .tab_menu {
+    margin: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .align_menu__button,
+    .tab_menu__button {
+      position: relative
+      padding: 4px;
+      // width: 30px;
+      // height: 30px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      transition: transform 250ms ease-in-out;
+
+      .align_menu__title,
+      .tab_menu__title {
+        display: none;
+        font-size: 14px;
+      }
+
+      &:focus {
+        outline: 2px dashed ${themeLightGray};
+      }
+
+      &:first-child {
+        &:hover {
+          .tab_menu__title {
+            left: 0;
+            transform: translateX(0%);
+          }
+        }
+      }
+      
+      &:last-child {
+        &:hover {
+          .tab_menu__title {
+            left: unset;
+            right: 0;
+            transform: translateX(0%);
+          }
+        }
+      }
+
+      &:hover {
+        transform: scale(1.3);
+        .tab_menu__title {
+          position: absolute;
+          display: inline-block;
+          width: fit-content;
+          word-break: keep-all;
+          top: -30px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: ${themeColor};
+          color: ${themeLight};
+          padding: 4px;
+          border-radius: 4px;
+        }
+      }
+
+      svg.tab_menu__icon {
+        width: 20px;
+        height: 20px;
+        fill:none;
+        stroke: ${themeGray};
+        stroke-miterlimit:10;
+        stroke-width:5px;
+
+        &.active {
+          stroke: ${themeComplementaryColor};
+        }
+
+        &:hover {
+          stroke: ${themeColor};
+        }
+      }
+
+      svg.align_menu__icon {
+        width: 20px;
+        height: 20px;
+        fill:none;
+        stroke: ${themeGray};
+        stroke-miterlimit:10;
+        stroke-width:2px;
+
+        &.active {
+          stroke: ${themeComplementaryColor};
+        }
+
+        &:hover {
+          stroke: ${themeColor};
+        }
+      }
+    }
+  }
+
+  .tab_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100px;
+    padding: 10px;
+  }
+
   .btn {
     display: block;
     background: ${themeLight};
@@ -71,7 +177,7 @@ const GlobalStyle = createGlobalStyle`
     max-width: 660px;
     margin: 0 auto;
     padding: 5px;
-    padding-top: 100px;
+    padding-top: 80px;
   }
 
   select#races {
@@ -133,7 +239,9 @@ const GlobalStyle = createGlobalStyle`
   .unit_picker {
     .unit_picker__radio-wrapper{
       display: inline-block;
-      width: 50%;
+      // width: 50%;
+      width: 100%;
+      margin: 4px;
 
       &--active {
         background-color: ${themeLightGray};
@@ -205,7 +313,7 @@ const GlobalStyle = createGlobalStyle`
     position: relative;
     height: 0;
     padding-bottom: 100%;
-    margin-bottom: 100px;
+    margin-bottom: 10px;
     overflow: hidden;
     z-index: -1;
 
@@ -228,21 +336,22 @@ const GlobalStyle = createGlobalStyle`
     bottom: 0;
     left: 0;
     z-index: -1;
-    background: -moz-linear-gradient(-45deg,  rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(-45deg,  rgba(0,0,0,0.25) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(135deg,  rgba(0,0,0,0.25) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c2000000', endColorstr='#00000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    background: rgba(0,0,0,0.15);
+    // background: -moz-linear-gradient(-45deg,  rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
+    // background: -webkit-linear-gradient(-45deg,  rgba(0,0,0,0.25) 0%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    // background: linear-gradient(135deg,  rgba(0,0,0,0.25) 0%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c2000000', endColorstr='#00000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
   }
 
   div#hidden_monitor {
     background-size: cover;
     background-position: center;
-    position: absolute;
+    position: fixed;
     height: 650px;
     width: 650px;
-    top: -9999px;
+    top: 9999px;
     overflow: hidden;
-    left: -9999px;
+    left: 9999px;
     z-index: -1;
   }
 
@@ -317,7 +426,7 @@ const GlobalStyle = createGlobalStyle`
     height: 22px;
     width: 22px;
     border-radius: 50%;
-    background: #ff00a3;
+    background: ${themeColor};
     cursor: pointer;
     -webkit-appearance: none;
     margin-top: -11px;
@@ -330,7 +439,7 @@ const GlobalStyle = createGlobalStyle`
     height: 8.4px;
     cursor: pointer;
     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-    background: #3071a9;
+    background: ${themeLightGray};
     border-radius: 1.3px;
     border: 0.2px solid #010101;
   }
