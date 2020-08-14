@@ -1,4 +1,5 @@
 import React from 'react';
+import Div from './styles';
 
 export default function ShareImage(props) {
   const styles = {
@@ -17,13 +18,8 @@ export default function ShareImage(props) {
   label = label + units;
 
   return (
-    <div id={props.modifier} className={props.classes} style={wrapperStyles}>
-      {/* <img
-        src={props.imageUrl}
-        className={'share_image__image'}
-        id={'share_image__image'}
-      /> */}
-      <div className={props.imageUrl ? 'gradient' : ''} />
+    <Div id={props.modifier} className={props.classes} style={wrapperStyles}>
+      <div style={{ background: props.overlay }} className={'color_filter'} />
       <div style={{ padding: '20px' }}>
         <div
           style={styles}
@@ -69,6 +65,6 @@ export default function ShareImage(props) {
           </div>
         </div>
       </div>
-    </div>
+    </Div>
   );
 }

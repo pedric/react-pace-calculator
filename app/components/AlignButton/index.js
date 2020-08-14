@@ -7,6 +7,7 @@ import {
   themeLight,
   themeDark,
 } from 'settings/colors';
+import Button from './styles';
 
 export default function AlignButton(props) {
   // console.log(props);
@@ -88,7 +89,7 @@ export default function AlignButton(props) {
   }
 
   return (
-    <button
+    <Button
       key={props.name}
       value={props.name}
       onClick={() => props.handleClick(props.name)}
@@ -101,6 +102,6 @@ export default function AlignButton(props) {
     >
       {icon}
       <span className={'align_menu__title'}>{props.name}</span>
-    </button>
+    </Button>
   );
 }

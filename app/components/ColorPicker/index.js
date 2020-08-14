@@ -1,8 +1,9 @@
 import React from 'react';
+import Button from './styles';
 
 export default function ColorPicker(props) {
   const buttons = props.colors.map(color => (
-    <button
+    <Button
       key={color}
       style={{ backgroundColor: color }}
       value={color}
@@ -10,11 +11,11 @@ export default function ColorPicker(props) {
       onClick={props.handleChange}
     >
       color
-    </button>
+    </Button>
   ));
   return (
     <div style={{ padding: '10px' }}>
-      {/* <p>{props.label}</p> */}
+      <p style={{ textAlign: 'center' }}>{props.label}</p>
       {buttons}
     </div>
   );

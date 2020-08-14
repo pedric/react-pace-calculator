@@ -1,13 +1,14 @@
 import React from 'react';
 import html2canvas from 'html2canvas';
 import { saveAs } from 'file-saver';
-import RangeInput from 'components/RangeInput';
-import ImageUpload from 'components/ImageUpload';
-import ShareImage from 'components/ShareImage';
-import UnitPicker from 'components/UnitPicker';
-import ColorPicker from 'components/ColorPicker';
-import AlignButton from 'components/AlignButton';
-import TabButton from 'components/TabButton';
+import RangeInput from 'components/RangeInput/index';
+import ImageUpload from 'components/ImageUpload/index';
+import ShareImage from 'components/ShareImage/index';
+import UnitPicker from 'components/UnitPicker/index';
+import ColorPicker from 'components/ColorPicker/index';
+import AlignButton from 'components/AlignButton/index';
+import FontButton from 'components/FontButton/index';
+import TabButton from 'components/TabButton/index';
 import RunningData from 'data/data';
 import Calculator from 'classes/Calculator';
 
@@ -20,6 +21,7 @@ class ImageGeneratorPage extends React.Component {
     this.onAfterChange = this.onAfterChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.pickColor = this.pickColor.bind(this);
+    this.setOverlay = this.setOverlay.bind(this);
     this.saveImage = this.saveImage.bind(this);
     this.setActiveTab = this.setActiveTab.bind(this);
     this.setCustomRaceTitle = this.setCustomRaceTitle.bind(this);
@@ -145,15 +147,15 @@ class ImageGeneratorPage extends React.Component {
     this.setState({ color: e.target.value });
   };
 
+  setOverlay = e => {
+    this.setState({ overlay: e.target.value });
+  };
+
   saveImage = () => {
-    console.log('trying to save image');
     const element = document.getElementById('hidden_monitor');
-    console.log(element);
     const rect = element.getBoundingClientRect();
     const width = rect.right - rect.left;
     const height = rect.bottom - rect.top;
-    console.log(width, height);
-    console.log(window.innerWidth, window.innerHeight);
     const today = new Date();
     let filename = today.getFullYear();
     filename +=
@@ -213,6 +215,13 @@ class ImageGeneratorPage extends React.Component {
     this.setState({ textAlign });
   };
 
+  setFont = font => {
+    console.log(font);
+    const fontChoice = { ...this.state.fontChoice };
+    fontChoice.active = font;
+    this.setState({ fontChoice });
+  };
+
   render() {
     const raceOptions = this.state.raceTypes.map(race => (
       <option key={race.name} value={race.length} name={race.name}>
@@ -235,6 +244,14 @@ class ImageGeneratorPage extends React.Component {
         active={this.state.textAlign.active}
       />
     ));
+    const fontChoices = this.state.fontChoice.nav.map(name => (
+      <FontButton
+        key={name}
+        name={name}
+        handleClick={this.setFont}
+        active={this.state.fontChoice.active}
+      />
+    ));
     return (
       <div className={'container'}>
         <div className={'share_image'}>
@@ -244,7 +261,8 @@ class ImageGeneratorPage extends React.Component {
             classes={'share_image f4'}
             align={this.state.textAlign.active}
             color={this.state.color}
-            font={'inherit'}
+            overlay={this.state.overlay}
+            font={this.state.fontChoice.active}
             imageUrl={this.state.image}
             name={this.state.raceName}
             units={this.state.units}
@@ -263,7 +281,8 @@ class ImageGeneratorPage extends React.Component {
             classes={'f4'}
             align={this.state.textAlign.active}
             color={this.state.color}
-            font={'inherit'}
+            overlay={this.state.overlay}
+            font={this.state.fontChoice.active}
             imageUrl={this.state.image}
             name={this.state.raceName}
             units={this.state.units}
@@ -413,6 +432,7 @@ class ImageGeneratorPage extends React.Component {
               </div>
               <div>
                 <nav className={'align_menu'}>{alignChoices}</nav>
+                <nav className={'font_menu'}>{fontChoices}</nav>
               </div>
             </div>
           </div>
@@ -424,11 +444,18 @@ class ImageGeneratorPage extends React.Component {
                 : { display: 'none' }
             }
           >
-            <ColorPicker
-              // label={'Text color options'}
-              colors={this.state.colorOptions}
-              handleChange={this.pickColor}
-            />
+            <div>
+              <ColorPicker
+                label={'Text color'}
+                colors={this.state.colorOptions}
+                handleChange={this.pickColor}
+              />
+              <ColorPicker
+                label={'Overlay color'}
+                colors={this.state.overLayColorOptions}
+                handleChange={this.setOverlay}
+              />
+            </div>
           </div>
           <div
             className={'tab_container'}

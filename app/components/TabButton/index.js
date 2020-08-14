@@ -1,15 +1,7 @@
 import React from 'react';
-import {
-  themeColor,
-  themeComplementaryColor,
-  themeGray,
-  themeLightGray,
-  themeLight,
-  themeDark,
-} from 'settings/colors';
+import Button from './styles';
 
 export default function TabButton(props) {
-  // console.log(props);
   let icon = props.name;
   if (props.name === 'time') {
     icon = (
@@ -169,7 +161,7 @@ export default function TabButton(props) {
     );
   }
   return (
-    <button
+    <Button
       key={props.name}
       value={props.name}
       onClick={() => props.handleClick(props.name)}
@@ -182,6 +174,6 @@ export default function TabButton(props) {
     >
       {icon}
       <span className={'tab_menu__title'}>{props.name}</span>
-    </button>
+    </Button>
   );
 }

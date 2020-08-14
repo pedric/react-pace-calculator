@@ -1,14 +1,14 @@
 import React from 'react';
-
+import Div from './styles';
 export default function ImageUpload(props) {
-  const wrapperStyles = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '10px',
-  };
+  // const wrapperStyles = {
+  //   display: 'flex',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   padding: '10px',
+  // };
   return (
-    <div style={wrapperStyles}>
+    <Div>
       <input
         type="file"
         id="image"
@@ -20,6 +20,6 @@ export default function ImageUpload(props) {
       <label htmlFor="image" className={'file_input__label'}>
         {props.status ? 'Change image' : 'Upload image'}
       </label>
-    </div>
+    </Div>
   );
 }

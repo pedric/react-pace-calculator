@@ -1,7 +1,7 @@
 import React from 'react';
-import RangeInput from 'components/RangeInput';
+import RangeInput from 'components/RangeInput/index';
 import ResultsMonitor from 'components/ResultsMonitor';
-import UnitPicker from 'components/UnitPicker';
+import UnitPicker from 'components/UnitPicker/index';
 import RunningData from 'data/data';
 import Calculator from 'classes/Calculator';
 

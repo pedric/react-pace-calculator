@@ -1,21 +1,20 @@
 import React from 'react';
+import Div from './styles';
 
 export default function RangeInput(props) {
-  const wrapperStyles = {
-    padding: '10px',
-  };
-
   const inputStyles = {
     display: 'flex',
     alignItems: 'center',
   };
 
   return (
-    <div
+    <Div
       className={`input_wrapper ${props.active ? '' : 'input_wrapper--active'}`}
-      style={wrapperStyles}
     >
-      <div style={{ textAlign: 'center' }}>
+      <div className={props.active ? 'notice' : 'notice  hidden'}>
+        You must set distance before you can enter {props.label}
+      </div>
+      <div className={'input_wrapper__label'}>
         {props.value}
         <span className={'f6'}> {props.label}</span>
       </div>
@@ -37,6 +36,6 @@ export default function RangeInput(props) {
         />
         <span>{props.max}</span>
       </div>
-    </div>
+    </Div>
   );
 }

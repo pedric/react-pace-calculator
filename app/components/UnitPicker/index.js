@@ -1,23 +1,10 @@
 import React, { useState } from 'react';
+import Form from './styles';
 // see code in comments to use the useState hook
 export default function UnitPicker(props) {
   // const [active, setActive] = useState('metric');
-  // const wrapperStyles = {
-  //   display: 'flex',
-  //   justifyContent: 'space-around',
-  //   alignItems: 'center',
-  // };
-
-  // const spanStyles = {
-  //   width: '50%',
-  //   height: '30px',
-  //   display: 'flex',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   margin: '1px',
-  // };
   return (
-    <form className={'unit_picker'}>
+    <Form className={'unit_picker'}>
       <span
         className={
           props.active == 'metric'
@@ -74,6 +61,6 @@ export default function UnitPicker(props) {
           {props.imperialLabel}
         </label>
       </span>
-    </form>
+    </Form>
   );
 }

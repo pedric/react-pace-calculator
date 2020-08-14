@@ -1,5 +1,5 @@
 import React from 'react';
-import RangeInput from 'components/RangeInput';
+import RangeInput from 'components/RangeInput/index';
 import ResultsMonitor from 'components/ResultsMonitor';
 import RunningData from 'data/data';
 import Calculator from 'classes/Calculator';

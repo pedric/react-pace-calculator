@@ -90,17 +90,26 @@ const RunningData = {
     '#8bc34a',
     '#0000a6',
     '#ff78e1',
+    'transparent',
+  ],
+  overLayColorOptions: [
+    'rgba(255,255,255,.5)',
+    'rgba(0,0,0,.5)',
+    'rgba(158,158,158,.5)',
+    'rgba(242,0,82,.5)',
+    'rgba(139, 195, 74,.5)',
+    'rgba(0,0,166,.5)',
+    'rgba(255,120,225,.5)',
+    'rgba(0,0,0,0.0)',
   ],
   raceName: '',
   customRaceTitle: '',
-  raceLength: {
-    meters: 0,
-    miles: 0,
-  },
+  raceLength: 0,
   totalTimeInSeconds: 0,
   units: 'metric',
   image: '',
   color: '',
+  overlay: 'transparent',
   imageEditor: {
     nav: ['image', 'units', 'distance', 'time', 'text', 'color', 'download'],
   },
@@ -108,6 +117,10 @@ const RunningData = {
   textAlign: {
     nav: ['left', 'center', 'right'],
     active: 'left',
+  },
+  fontChoice: {
+    nav: ['inherit', 'Anton', 'Roboto Mono'],
+    active: 'inherit',
   },
 };
 

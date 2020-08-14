@@ -10,7 +10,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import Header from 'components/Header';
+import AppHeader from 'components/Header/index';
 import TotalTimePage from 'containers/TotalTimePage/Loadable';
 import AveragePacePage from 'containers/AveragePacePage/Loadable';
 import ImageGeneratorPage from 'containers/ImageGeneratorPage/Loadable';
@@ -28,7 +28,7 @@ export default function App() {
         <Route component={NotFoundPage} />
       </Switch>
       <GlobalStyle />
-      <Header />
+      <AppHeader />
     </div>
   );
 }
