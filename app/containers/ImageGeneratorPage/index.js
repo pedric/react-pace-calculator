@@ -238,7 +238,8 @@ class ImageGeneratorPage extends React.Component {
     const now = new Date().getTime();
     let last_update = this.ApiHandler.getLastUpdate();
 
-    if (now > last_update + twentyFourHoursInSeconds) {
+    // if (now > last_update + twentyFourHoursInSeconds) {
+    if (true) {
       let client_id = process.env.CLIENT_ID ? process.env.CLIENT_ID : false;
       if (!client_id) {
         await fetch(`${window.location.origin}/api/unsplash/uid`)
