@@ -47,7 +47,7 @@ const Div = styled.div`
 
   input[type='range'] {
     -webkit-appearance: none;
-    margin: 18px auto;
+    margin: 36px auto 18px;
     width: 90%;
   }
 

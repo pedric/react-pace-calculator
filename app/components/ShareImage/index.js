@@ -20,47 +20,47 @@ export default function ShareImage(props) {
   return (
     <Div id={props.modifier} className={props.classes} style={wrapperStyles}>
       <div style={{ background: props.overlay }} className={'color_filter'} />
-      <div style={{ padding: '20px' }}>
+      <div style={{ padding: '32px' }}>
         <div
           style={styles}
           className={props.customTitle ? '' : 'visibility_hidden'}
         >
-          <span className={props.customTitle ? 'f3' : 'f6'}>
+          <span className={props.customTitle ? 'f2' : 'f6'}>
             {props.customTitle}
           </span>
         </div>
         <div style={styles}>
-          <span className={props.name ? 'f3' : 'visibility_hidden  f6'}>
+          <span className={props.name ? 'f2' : 'visibility_hidden  f6'}>
             {label}
           </span>
         </div>
         <div style={styles}>
           <span className={'f6'}>Time:</span>
           <div className={'f3'}>
-            <span>{props.finisherHours}</span>
+            <span className={'f2'}>{props.finisherHours}</span>
             <span className={'f6'}>h</span>
             <span>:</span>
-            <span>{props.finisherMinutes}</span>
+            <span className={'f2'}>{props.finisherMinutes}</span>
             <span className={'f6'}>m</span>
             <span>:</span>
-            <span>{props.finisherSeconds}</span>
+            <span className={'f2'}>{props.finisherSeconds}</span>
             <span className={'f6'}>s</span>
           </div>
         </div>
         <div style={styles}>
           <span className={'f6'}>Pace:</span>
           <div className={'f3'}>
-            <span>{props.paceMinutesPerKm}</span>
+            <span className={'f2'}>{props.paceMinutesPerKm}</span>
             <span>:</span>
-            <span>{props.paceSecondsPerKm}</span>
+            <span className={'f2'}>{props.paceSecondsPerKm}</span>
             <span className={'f6'}> (min/km)</span>
           </div>
         </div>
         <div style={styles}>
           <div className={'f3'}>
-            <span>{props.paceMinutesPerMiles}</span>
+            <span className={'f2'}>{props.paceMinutesPerMiles}</span>
             <span>:</span>
-            <span>{props.paceSecondsPerMiles}</span>
+            <span className={'f2'}>{props.paceSecondsPerMiles}</span>
             <span className={'f6'}> (min/mi)</span>
           </div>
         </div>

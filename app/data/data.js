@@ -119,8 +119,8 @@ const RunningData = {
     active: 'left',
   },
   fontChoice: {
-    nav: ['inherit', 'Anton', 'Roboto Mono'],
-    active: 'inherit',
+    nav: ['Roboto Mono', 'inherit', 'Anton'],
+    active: 'Roboto Mono',
   },
   apiResponse: [],
 };

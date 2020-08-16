@@ -21,17 +21,37 @@ export default function HelpCenter(props) {
         className={'helpcenter__button'}
         onClick={() => toggleMenu((activeMenu = !activeMenu))}
       >
-        {activeMenu ? '.' : 'M'}
+        {activeMenu ? 'CLOSE' : 'M'}
       </button>
       <aside
         className={activeMenu ? 'helpcenter__info active' : 'helpcenter__info'}
       >
-        <h2>Time calculator</h2>
-        <p>info ...</p>
-        <h2>Pace calculator</h2>
-        <p>info ...</p>
-        <h2>Image generator</h2>
-        <p>info ...</p>
+        <h2>
+          <span className={'f4'}>The</span>
+          <a href="/">Time calculator</a>
+        </h2>
+        <p>
+          will help you find the average pace needed to reach a finisher time on
+          a given distance.
+        </p>
+        <h2>
+          <span className={'f4'}>The</span>
+          <a href="/">Pace calculator</a>
+        </h2>
+        <p>
+          Will give you the opposite of above, you enter distance and average
+          pace which will give you the expected finisher time.
+        </p>
+        <h2>
+          <span className={'f4'}>The</span>
+          <a href="/image-generator">Image generator</a>
+        </h2>
+        <p>
+          This is a tool in which you can generate an image with race title,
+          distance and average pace printed on it. When you are done you can
+          download it to your device and it's ready to share with your friends
+          and followers.
+        </p>
       </aside>
     </Div>
   );

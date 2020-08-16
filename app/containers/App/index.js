@@ -28,7 +28,7 @@ export default function App() {
         <Route component={NotFoundPage} />
       </Switch>
       <GlobalStyle />
-      {/* <AppHeader /> */}
+      <AppHeader />
     </div>
   );
 }

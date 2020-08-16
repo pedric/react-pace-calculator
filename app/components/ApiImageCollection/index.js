@@ -13,5 +13,10 @@ export default function ApiImageCollection(props) {
       />
     </div>
   ));
-  return <Div>{images}</Div>;
+  return (
+    <Div>
+      <p className={'image_picker__label'}>Or use one of the images below</p>
+      <Div className={'image_picker__images-wrapper'}>{images}</Div>
+    </Div>
+  );
 }

@@ -25,23 +25,23 @@ const Div = styled.div`
   .helpcenter__button {
     background-color: ${themeLight};
     color: ${themeColor};
-    padding: 0 0 0 1px;
+    padding: 5px 3px;
     margin: 0;
     font-size: 11px;
-    width: 16px;
-    height: 16px;
+    // width: 16px;
+    // height: 16px;
+    line-height: 0.4;
     position: absolute;
     top: 8px;
     right: 16px;
     z-index: 999;
-
     border: none;
     text-align: 'center';
     text-decoration: 'none';
     display: 'inline-block';
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
+    // width: 20px;
+    // height: 20px;
+    border-radius: 8px;
     border: 1px solid ${themeLightGray};
     cursor: pointer;
     transform: all 250ms ease-in-out;
@@ -51,7 +51,7 @@ const Div = styled.div`
     }
 
     &:focus {
-      outline: 2px dashed ${themeLightGray};
+      outline: 2px dashed ${themeColor};
     }
   }
 
@@ -70,6 +70,31 @@ const Div = styled.div`
     &.active {
       width: 90%;
       padding: 20px;
+    }
+
+    span {
+      font-family: 'Quicksand';
+      font-weight: 100;
+    }
+
+    h2 {
+      font-family: 'Roboto Mono';
+      margin-bottom: 0;
+    }
+
+    a {
+      color: ${themeLight};
+      text-decoration: none;
+
+      &:hover {
+        color: ${themeLightGray};
+        text-decoration: underline;
+      }
+    }
+
+    p {
+      margin-top: 8px;
+      max-width: 400px;
     }
   }
 `;

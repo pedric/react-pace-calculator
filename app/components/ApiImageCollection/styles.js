@@ -9,15 +9,22 @@ import {
 } from 'settings/colors';
 
 const Div = styled.div`
-  display: flex;
-  overflow: hidden;
   width: 100%;
-  overflow-x: scroll;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  .image_picker__images-wrapper {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    overflow-x: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 
-  &::-webkit-scrollbar {
-    display: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .image_picker__label {
+    text-align: center;
   }
 
   .image_picker__wrapper {

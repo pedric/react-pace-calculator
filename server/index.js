@@ -18,7 +18,6 @@ const { resolve } = require('path');
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
-require('./db.js')();
 
 // API
 const api = require('./api');
