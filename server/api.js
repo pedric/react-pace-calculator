@@ -46,7 +46,7 @@ router.post('/last_update/update/:id', (req, res) => {
   const now = new Date().getTime();
   db.pace_data.findAndmodify(
     {
-      query: { _id: id },
+      query: { _id: req.params.id },
       update: { time: now },
     },
     (err, doc) => {
