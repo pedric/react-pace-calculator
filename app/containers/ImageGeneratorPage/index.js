@@ -236,7 +236,7 @@ class ImageGeneratorPage extends React.Component {
   async callApi() {
     const twentyFourHoursInSeconds = 60 * 60 * 24;
     const now = new Date().getTime();
-    // let last_update = this.ApiHandler.getLastUpdate();
+    let last_update = this.ApiHandler.getLastUpdate();
 
     // if (now > last_update + twentyFourHoursInSeconds) {
     if (true) {
@@ -250,8 +250,8 @@ class ImageGeneratorPage extends React.Component {
           .catch(err => console.log(err));
       }
 
-      // this.ApiHandler.updateCacheTimeStamp(last_update.id);
-      // this.ApiHandler.clearImagesCollection();
+      this.ApiHandler.updateCacheTimeStamp(last_update.id);
+      this.ApiHandler.clearImagesCollection();
       let cleanArray = [];
       await fetch(
         `https://api.unsplash.com/search/photos/?client_id=${client_id}&query=running&page=1&per_page=30&content_filter=high&SameSite=None`,
@@ -263,7 +263,7 @@ class ImageGeneratorPage extends React.Component {
           }),
         )
         .then(data => this.setState({ apiResponse: cleanArray }))
-        // .then(data => this.updateDb(cleanArray))
+        .then(data => this.updateDb(cleanArray))
         .catch(err => console.log(err));
     } else {
       await fetch(window.location.origin + '/api/unsplash')
