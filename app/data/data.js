@@ -122,6 +122,7 @@ const RunningData = {
     nav: ['inherit', 'Anton', 'Roboto Mono'],
     active: 'inherit',
   },
+  apiResponse: [],
 };
 
 export default RunningData;

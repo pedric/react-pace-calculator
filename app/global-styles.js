@@ -65,6 +65,7 @@ const GlobalStyle = createGlobalStyle`
 
   .tab_container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100px;

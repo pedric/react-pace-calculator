@@ -2,6 +2,9 @@
 
 const express = require('express');
 const logger = require('./logger');
+var cors = require('cors');
+// mongodb://Pedric:Run4urlif3@ds155529.mlab.com:55529/artikelserien
+const bodyParser = require('body-parser');
 
 const argv = require('./argv');
 const port = require('./port');
@@ -13,10 +16,12 @@ const ngrok =
     : false;
 const { resolve } = require('path');
 const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+require('./db.js')();
 
-// If you need a backend, e.g. an API, add your custom backend-specific middleware here
-// app.use('/api', myApi);
-const api = require('./api.js');
+// API
+const api = require('./api');
 app.use('/api/unsplash', api);
 
 // In production we need to pass these values in instead of relying on webpack

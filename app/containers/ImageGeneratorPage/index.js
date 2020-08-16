@@ -9,8 +9,11 @@ import ColorPicker from 'components/ColorPicker/index';
 import AlignButton from 'components/AlignButton/index';
 import FontButton from 'components/FontButton/index';
 import TabButton from 'components/TabButton/index';
+import ApiImageCollection from 'components/ApiImageCollection/index';
 import RunningData from 'data/data';
 import Calculator from 'classes/Calculator';
+import ApiHandler from 'classes/ApiHandler';
+import { last } from 'lodash';
 
 class ImageGeneratorPage extends React.Component {
   constructor() {
@@ -25,11 +28,19 @@ class ImageGeneratorPage extends React.Component {
     this.saveImage = this.saveImage.bind(this);
     this.setActiveTab = this.setActiveTab.bind(this);
     this.setCustomRaceTitle = this.setCustomRaceTitle.bind(this);
+    this.callApi = this.callApi.bind(this);
+    this.setImageFromApi = this.setImageFromApi.bind(this);
+    this.updateDb = this.updateDb.bind(this);
     this.calculator = new Calculator();
+    this.ApiHandler = new ApiHandler();
   }
 
   handleChange = e => {
     const url = URL.createObjectURL(e.target.files[0]);
+    this.setState({ image: url });
+  };
+
+  setImageFromApi = url => {
     this.setState({ image: url });
   };
 
@@ -50,10 +61,11 @@ class ImageGeneratorPage extends React.Component {
     // this.setTimeInSeconds();
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const imageEditor = { ...this.state.imageEditor };
     imageEditor.activeTab = 'image';
     this.setState({ imageEditor });
+    this.callApi();
   }
 
   async onAfterChange() {
@@ -216,11 +228,69 @@ class ImageGeneratorPage extends React.Component {
   };
 
   setFont = font => {
-    console.log(font);
     const fontChoice = { ...this.state.fontChoice };
     fontChoice.active = font;
     this.setState({ fontChoice });
   };
+
+  async callApi() {
+    const twentyFourHoursInSeconds = 60 * 60 * 24;
+    const now = new Date().getTime();
+    let last_update = this.ApiHandler.getLastUpdate();
+
+    if (now > last_update + twentyFourHoursInSeconds) {
+      let client_id = process.env.CLIENT_ID ? process.env.CLIENT_ID : false;
+      if (!client_id) {
+        await fetch(`${window.location.origin}/api/unsplash/uid`)
+          .then(response => response.json())
+          .then(data => (client_id = data.id))
+          .catch(err => console.log(err));
+      }
+
+      this.ApiHandler.updateCacheTimeStamp(last_update.id);
+      this.ApiHandler.clearImagesCollection();
+      let cleanArray = [];
+      await fetch(
+        `https://api.unsplash.com/search/photos/?client_id=${client_id}&query=running&page=1&per_page=30&content_filter=high`,
+      )
+        .then(response => response.json())
+        .then(data =>
+          data.results.forEach(element => {
+            cleanArray.push(element.urls);
+          }),
+        )
+        .then(data => this.setState({ apiResponse: cleanArray }))
+        .then(data => this.updateDb(cleanArray))
+        .catch(err => console.log(err));
+    } else {
+      await fetch(window.location.origin + '/api/unsplash')
+        .then(response => response.json())
+        .then(data => this.setState({ apiResponse: data }))
+        .catch(err => console.log(err));
+    }
+
+    // await this.updateDb(cleanArray);
+  }
+
+  async updateDb(data) {
+    this.ApiHandler.updateImagesCollection(data);
+    // console.log('trying to update db with: ', data);
+    // await fetch('http://localhost:3000/api/unsplash', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   mode: 'cors',
+    //   redirect: 'follow',
+    //   referrerPolicy: 'no-referrer',
+    //   body: JSON.stringify(data),
+    // });
+  }
+
+  componentDidMount() {
+    // this.callApi();
+    // this.updateDb();
+  }
 
   render() {
     const raceOptions = this.state.raceTypes.map(race => (
@@ -311,6 +381,10 @@ class ImageGeneratorPage extends React.Component {
             <ImageUpload
               handleChange={this.handleChange}
               status={this.state.image}
+            />
+            <ApiImageCollection
+              items={this.state.apiResponse}
+              handleChange={this.setImageFromApi}
             />
           </div>
           <div

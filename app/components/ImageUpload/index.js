@@ -18,7 +18,7 @@ export default function ImageUpload(props) {
         className={'file_input'}
       />
       <label htmlFor="image" className={'file_input__label'}>
-        {props.status ? 'Change image' : 'Upload image'}
+        Upload image
       </label>
     </Div>
   );
